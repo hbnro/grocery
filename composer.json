@@ -1,0 +1,13 @@
+{
+  "name": "habanero/grocery",
+  "description": "Fancy database library for PHP",
+  "authors": [{
+    "name":"Alvaro Cabrera"
+  }],
+  "require": {
+    "php": ">=5.3"
+  },
+  "autoload": {
+    "psr-0": {"Grocery": "lib/"}
+  }
+}
