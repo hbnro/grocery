@@ -49,7 +49,7 @@ class Record extends Hasher
 
   public function __toString()
   {
-    return print_r($this->data, TRUE);
+    return $this->to_s();
   }
 
   public function serialize()
@@ -71,6 +71,11 @@ class Record extends Hasher
   public function to_json()
   {
     return json_encode($this->data);
+  }
+
+  public function to_s()
+  {
+    return print_r($this->data, TRUE);
   }
 
   public function to_a()

@@ -54,11 +54,7 @@ class Table extends Hasher
 
   public function __toString()
   {
-    $out = array();
-    foreach ($this->tables() as $one) {
-      $out []= $this->build_table($one, $this->columns($one));
-    }
-    return join(";\n", $out);
+    return $this->to_s();
   }
 
 
@@ -105,6 +101,26 @@ class Table extends Hasher
       $test[$one] = new \Grocery\Handle\Table($one, $this);
     }
     return new \ArrayIterator($test);
+  }
+
+
+  public function to_json()
+  {
+    return json_encode($this->to_a());
+  }
+
+  public function to_s()
+  {
+    $out = array();
+    foreach ($this->tables() as $one) {
+      $out []= $this->build_table($one, $this->columns($one));
+    }
+    return join(";\n", $out);
+  }
+
+  public function to_a()
+  {
+    return $this->scheme();
   }
 
 }

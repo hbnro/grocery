@@ -147,7 +147,7 @@ foreach (array(
   $old = serialize($db);
 
 
-  foreach ($db->scheme() as $i => $one) { echo "TABLE: $i => " . json_encode($one) . "\n"; }
+  foreach ($db->to_a() as $i => $one) { echo "TABLE: $i => " . json_encode($one) . "\n"; }
   foreach ($db as $i => $one) { $one->drop(); }
 
   echo "\n";
