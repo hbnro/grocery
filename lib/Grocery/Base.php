@@ -21,6 +21,7 @@ class Base
 
   public static $available = array(
                     // back to basics
+                    'pgsql' => '\\Grocery\\Database\\@\\PgSQL',
                     'sqlite' => '\\Grocery\\Database\\@\\SQLite',
                   );
 
@@ -73,7 +74,12 @@ class Base
       return $wrapper;
     }
 
-    return new $scheme_klass($wrapper, $params);
+    $obj = new $scheme_klass($wrapper, $params);
+
+    // TODO: enable configuration for this?
+    method_exists($obj, 'set_encoding') && $obj->set_encoding();
+
+    return $obj;
   }
 
 }
