@@ -54,6 +54,9 @@ class Table extends Hasher
 
   public function __toString()
   {
+    if ( ! method_exists($this, 'build_table')) {
+      return $this->build_table($this->columns());
+    }
     return $this->to_s();
   }
 
