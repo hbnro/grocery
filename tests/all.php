@@ -27,8 +27,11 @@ is_file($db_file = $data_dir.DIRECTORY_SEPARATOR.'db.sqlite') OR touch($db_file)
 
 // tests
 foreach (array(
+  'sqlite::memory:',
   'sqlite:'.$db_file,
   'sqlite:'.$db_file.'#pdo',
+  'pgsql://postgres:test@localhost/test',
+  'pgsql://postgres:test@localhost/test#pdo',
 ) as $test) {
 
   echo "\n\n=== New connection: $test\n";
@@ -88,10 +91,10 @@ foreach (array(
   $db->add_index('bar', 'my_str', array('str'));
   echo array_key_exists('my_str', $db->indexes('bar')) ? 'OK' : 'FAIL';
 
+
   echo "\nRemove index: ";
   $db->remove_index('bar', 'my_str');
   echo ! array_key_exists('my_str', $db->indexes('bar')) && array_key_exists('fuuuu', $db->indexes('bar')) ? 'OK' : 'FAIL';
-
 
 
   // all operations
@@ -144,8 +147,6 @@ foreach (array(
   echo ($ok / 2) === sizeof($set) ? 'OK' : 'FAIL';
   echo "\n\n";
 
-  $old = serialize($db);
-
 
   foreach ($db->to_a() as $i => $one) { echo "TABLE: $i => " . json_encode($one) . "\n"; }
   foreach ($db as $i => $one) { $one->drop(); }
@@ -170,12 +171,6 @@ foreach (array(
   echo json_encode($db->tables());
   echo "\n";
 
-  $tmp = unserialize($old);
-  $new = serialize($tmp);
-
-  echo "\nSerialization: ";
-  echo $old === $new ? 'OK' : 'FAIL';
-  echo "\n";
 
 
   $post = array(
@@ -194,8 +189,9 @@ foreach (array(
     $post->insert(array('title' => md5(uniqid(''))));
   }
 
+
   echo "\n\nFinders: ";
-  echo (sizeof($post->all()) == $top) && ($post->count() == $top) && $post->pick()->title ? 'OK' : 'FAIL';
+  echo (count($post) == $top) && ($post->count() == $top) && $post->pick()->title ? 'OK' : 'FAIL';
 
   $post->limit(1)->each(function ($row) {
     echo "\n\nSample: $row->title";
