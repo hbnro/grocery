@@ -181,7 +181,7 @@ class Dump extends Base
       }
 
       $sql []= '(' . join(', ', $cols) . ')';
-      $sql []= "\nVALUES(";
+      $sql []= "\nVALUES\n(\n";
     }
 
 
@@ -204,10 +204,10 @@ class Dump extends Base
       }
     }
 
-    $sql []= join(",\n", $out);
+    $sql []= ' ' . join(",\n ", $out);
 
     if ($insert) {
-      $sql []= ')';
+      $sql []= "\n)";
     }
 
     return join('', $sql);
