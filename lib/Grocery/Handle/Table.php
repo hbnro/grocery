@@ -103,6 +103,11 @@ class Table extends Hasher
     return new \ArrayIterator($test);
   }
 
+  public function count()
+  {
+    return sizeof($this->tables());
+  }
+
 
   public function to_json()
   {

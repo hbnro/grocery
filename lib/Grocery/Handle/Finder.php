@@ -102,7 +102,7 @@ class Finder extends Hasher
 
             return $this->select($params['select'] ?: '*', $params['where'], $params)->$method();
           case 'count';
-            return $this->select('COUNT(*)', $params['where'], $params)->result();
+            return (int) $this->select('COUNT(*)', $params['where'], $params)->result();
           case 'each';
             @list($lambda) = $arguments;
 
@@ -116,7 +116,7 @@ class Finder extends Hasher
               return;
             }
           default;
-            throw new \Exception("Invalid parameters on 'where()'.");
+            throw new \Exception("Invalid parameters on '$method()'.");
         }
       case in_array($method, static::$chained);
         if (sizeof($arguments) === 0) {
@@ -129,6 +129,7 @@ class Finder extends Hasher
         $method = str_replace('get', 'select', $method);
 
         $this->params[$method] = $first;
+
         return $this;
       case 'index';
         @list($name, $unique) = $arguments;
@@ -139,6 +140,17 @@ class Finder extends Hasher
       default;
         return parent::__call($method, $arguments);
     }
+  }
+
+
+  public function getIterator()
+  {
+    return new \ArrayIterator($this->all());
+  }
+
+  public function count()
+  {
+    return $this->__call('count', array());
   }
 
 }

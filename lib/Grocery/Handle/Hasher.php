@@ -2,7 +2,7 @@
 
 namespace Grocery\Handle;
 
-class Hasher extends Base implements \Serializable, \ArrayAccess, \IteratorAggregate
+class Hasher extends Base implements \Countable, \Serializable, \ArrayAccess, \IteratorAggregate
 {
 
   public function serialize()
@@ -38,6 +38,11 @@ class Hasher extends Base implements \Serializable, \ArrayAccess, \IteratorAggre
   public function getIterator()
   {
     return new \ArrayIterator(array());
+  }
+
+  public function count()
+  {
+    return -1;
   }
 
 }

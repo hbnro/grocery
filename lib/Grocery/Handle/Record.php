@@ -67,6 +67,11 @@ class Record extends Hasher
     return new \ArrayIterator($this->data);
   }
 
+  public function count()
+  {
+    return sizeof($this->data);
+  }
+
 
   public function to_json()
   {
