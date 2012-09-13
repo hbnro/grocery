@@ -21,8 +21,7 @@ Grocery\Config::set('unserialize', 'reset');
 
 
 // required
-is_dir($data_dir = __DIR__.DIRECTORY_SEPARATOR.'data') OR mkdir($data_dir);
-is_file($db_file = $data_dir.DIRECTORY_SEPARATOR.'db.sqlite') OR touch($db_file);
+is_file($db_file = __DIR__.DIRECTORY_SEPARATOR.'db.sqlite') OR touch($db_file);
 
 
 // tests
@@ -30,8 +29,10 @@ foreach (array(
   'sqlite::memory:',
   'sqlite:'.$db_file,
   'sqlite:'.$db_file.'#pdo',
-  'pgsql://postgres:test@localhost/test',
-  'pgsql://postgres:test@localhost/test#pdo',
+  #'mysqli://root:test@localhost/test',
+  #'mysqli://root:test@localhost/test#pdo',
+  #'pgsql://postgres:test@localhost/test',
+  #'pgsql://postgres:test@localhost/test#pdo',
 ) as $test) {
 
   echo "\n\n=== New connection: $test\n";
