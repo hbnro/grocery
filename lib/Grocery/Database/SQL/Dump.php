@@ -12,7 +12,7 @@ class Dump extends Base
 
 
 
-  protected function build_field($type, $length = 0, $default = NULL)
+  protected function build_field($type, $length = 0, $default = NULL, $not_null = FALSE)
   {
     $tmp = static::$raw;
 
@@ -23,13 +23,14 @@ class Dump extends Base
     }
 
     if (\Grocery\Helpers::is_assoc($test)) {
-      $test = array_merge(compact('length', 'default'), $test);
+      $test = array_merge(compact('length', 'default', 'not_null'), $test);
 
-      $type    = ! empty($test['type']) ? $test['type'] : $type;
-      $length  = ! empty($test['length']) ? $test['length'] : $length;
-      $default = ! empty($test['default']) ? $test['default'] : $default;
+      $type     = isset($test['type']) ? $test['type'] : $type;
+      $length   = isset($test['length']) ? $test['length'] : $length;
+      $default  = isset($test['default']) ? $test['default'] : $default;
+      $not_null = isset($test['not_null']) ? $test['not_null'] : $not_null;
     } elseif (is_array($test)) {
-      @list($type, $length, $default) = $test;
+      @list($type, $length, $default, $not_null) = $test;
     } elseif ($test !== $type) {
       return $test;
     }
@@ -39,16 +40,16 @@ class Dump extends Base
         return $tmp[$type];
       }
 
-      $length OR $length = ! empty($tmp[$type]['length']) ? $tmp[$type]['length'] : 0;
+      $length OR $length = isset($tmp[$type]['length']) ? $tmp[$type]['length'] : 0;
       $type = $tmp[$type]['type'];
     }
 
     $type  = strtoupper($type);
     $type .= $length > 0 ? sprintf('(%d)', $length) : '';
-    $type .= $default ? ' NOT NULL' : '';
+    $type .= $not_null ? ' NOT NULL' : '';
 
-    if ( ! ($default === NULL)) {
-      $type .= ' DEFAULT ' . ($default === NULL ? 'NULL' : $this->fixate_string($default));
+    if ($default) {
+      $type .= ' DEFAULT ' . $this->fixate_string($default);
     }
 
     return $type;
