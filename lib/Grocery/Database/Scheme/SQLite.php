@@ -24,6 +24,7 @@ class SQLite extends \Grocery\Database\SQL\Scheme
                   'DOUBLE' => 'float',
                   'DECIMAL' => 'numeric',
                   'BLOB' => 'binary',
+                  'DATETIME' => 'timestamp',
                 );
 
   public static $raw = array(

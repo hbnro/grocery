@@ -27,6 +27,7 @@ class MySQLi extends \Grocery\Database\SQL\Scheme
                   'MEDIUMBLOB' => 'binary',
                   'TINYBLOB' => 'binary',
                   'BLOB' => 'binary',
+                  'DATETIME' => 'timestamp',
                 );
 
   public static $raw = array(
