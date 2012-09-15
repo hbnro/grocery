@@ -5,6 +5,43 @@ namespace Grocery;
 class Helpers
 {
 
+  public static function locked($table)
+  { // TODO: check locking
+  }
+
+  public static function hydrate($table, array $columns)
+  {
+    $old = $table->columns();
+
+    foreach ($columns as $key => $val) {
+      if (isset($old[$key])) {
+        if ( ! \Grocery\Helpers::is_assoc($val)) {
+          @list($type, $length, $default, $not_null) = $val;
+          $val = compact('type', 'length', 'default', 'not_null');
+        }
+
+        $type = isset($val['type']) ? $val['type'] : $old[$key]['type'];
+        $length = isset($val['length']) ? $val['length'] : $old[$key]['length'];
+        $default = isset($val['default']) ? $val['default'] : $old[$key]['default'];
+        $not_null = isset($val['not_null']) ? $val['not_null'] : $old[$key]['not_null'];
+
+        $tmp = compact('type', 'length', 'default', 'not_null');
+
+        if ($tmp != $old[$key]) {
+          $table[$key] = $tmp;
+        }
+      } else {
+        $table[$key] = $val;
+      }
+    }
+
+    if (sizeof($old) <> sizeof($columns)) {
+      foreach (array_keys(array_diff_key($old, $columns)) as $one) {
+        unset($table[$one]);
+      }
+    }
+  }
+
   public static function sql_split($test, $separator = ';')
   {
     $hash = uniqid('__SQLQUOTE__');
