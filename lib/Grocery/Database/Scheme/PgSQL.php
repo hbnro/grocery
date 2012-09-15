@@ -54,7 +54,28 @@ class PgSQL extends \Grocery\Database\SQL\Scheme
 
   public function change_column($from, $name, $to)
   {
-    return $this->execute(sprintf('ALTER TABLE "%s" ALTER COLUMN "%s" TYPE %s', $from, $name, $this->build_field($to)));
+    $sql = sprintf('ALTER TABLE "%s" ALTER COLUMN "%s"', $from, $name);
+    $type = $this->build_field($to);
+    $parts = explode(' ', $type);
+
+    $raw_type = join(' ', array_slice($parts, 0, 2));
+    $out = $this->execute("$sql TYPE $raw_type");
+
+    if (strpos($type, 'NOT NULL') !== FALSE) {
+      $type = trim(str_replace('NOT NULL', '', $type));
+      $out = $this->execute("$sql SET NOT NULL");
+    } else {
+      $out = $this->execute("$sql DROP NOT NULL");
+    }
+
+    if (strpos($type, 'DEFAULT') !== FALSE) {
+      $default = trim(str_replace($raw_type, '', $type));
+      $out = $this->execute("$sql SET $default");
+    } else {
+      $out = $this->execute("$sql DROP DEFAULT");
+    }
+
+    return $out;
   }
 
   public function add_index($to, $name, $column, $unique = FALSE)
@@ -130,7 +151,7 @@ class PgSQL extends \Grocery\Database\SQL\Scheme
         'type' => $id ? 'PRIMARY_KEY' : strtoupper($type),
         'length' => (int) array_shift($row),
         'default' => trim(array_shift($row), "(')"),
-        'not_null' => ! array_shift($row),
+        'not_null' => array_shift($row) == 'NO',
       );
     }
 
