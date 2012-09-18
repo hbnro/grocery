@@ -94,15 +94,6 @@ class Finder extends Hasher
         switch ($method) {
           case 'all';
             return $this->select($params['select'] ?: '*', $params['where'], $params)->fetch_all();
-          case 'pick';
-            @list($limit) = $arguments;
-
-            $method = $limit > 1 ?  'fetch_all' : 'fetch';
-            $params['limit'] = $limit ?: 1;
-
-            return $this->select($params['select'] ?: '*', $params['where'], $params)->$method();
-          case 'count';
-            return (int) $this->select('COUNT(*)', $params['where'], $params)->result();
           case 'each';
             @list($lambda) = $arguments;
 
@@ -115,6 +106,8 @@ class Finder extends Hasher
 
               return;
             }
+          case 'count';
+            return (int) $this->select('COUNT(*)', $params['where'], $params)->result();
           default;
             throw new \Exception("Invalid parameters on '$method()'.");
         }
