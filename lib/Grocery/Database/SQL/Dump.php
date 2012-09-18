@@ -102,12 +102,13 @@ class Dump extends Base
 
         if (is_numeric($one)) {
           $sql .= "\n";
-          $sql .= $set === 'RANDOM' ? static::$random : $this->protect_names($set[0]) . " $set[1]";
+          $sql .= $set == 'random' ? static::$random : $this->protect_names($set[0]) . " $set[1]";
           continue;
         }
 
         $one  = $this->protect_names($one);
-        $sql .= "\n$one $set";
+        $sql .= "\n$one ";
+        $sql .= strtoupper($set);
       }
     }
 

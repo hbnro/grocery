@@ -124,7 +124,7 @@ foreach (array(
     $rm = 0;
     $del = array();
     $min = rand(1, ceil(sizeof($old) / rand(2, 9)));
-    $all = $db->select($tbl, '*', array(), array('limit' => $min, 'order' => 'RANDOM'));
+    $all = $db->select($tbl, '*', array(), array('limit' => $min, 'order' => 'random'));
 
     while ($one = $all->fetch()) {
       $one->str = 'OK';
@@ -192,7 +192,7 @@ foreach (array(
 
 
   echo "\n\nFinders: ";
-  echo (count($post) == $top) && ($post->count() == $top) && $post->pick()->title ? 'OK' : 'FAIL';
+  echo (count($post) == $top) && ($post->count() == $top) ? 'OK' : 'FAIL';
 
   $post->limit(1)->each(function ($row) {
     echo "\n\nSample: $row->title";
@@ -208,7 +208,7 @@ foreach (array(
   $c = 13;
 
   while ($c -= 1) {
-    echo $post->select('title', array(), array('order' => 'RANDOM'))->fetch()->title . "\n       ";
+    echo $post->select('title', array(), array('order' => 'random'))->fetch()->title . "\n       ";
   }
 
   $post->delete();
