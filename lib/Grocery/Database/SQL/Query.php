@@ -47,7 +47,7 @@ class Query extends Dump
     $out = $this->execute($this->query_repare($sql));
 
     if ($message = $this->has_error()) {
-      throw new \Exception("Database error '$message' on '$sql'.");
+      throw new \Exception("Database failure on '$message'.\n---\n$sql");
     }
 
     return $out;
