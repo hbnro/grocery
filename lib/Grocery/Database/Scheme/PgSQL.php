@@ -175,6 +175,8 @@ class PgSQL extends \Grocery\Database\SQL\Scheme
       }
     }
 
+    unset($out["{$test}_pkey"]);
+
     return $out;
   }
 
