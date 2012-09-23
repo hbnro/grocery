@@ -27,6 +27,7 @@ class PgSQL extends \Grocery\Database\SQL\Scheme
                   'primary_key' => 'SERIAL PRIMARY KEY',
                   'string' => array('type' => 'CHARACTER varying', 'length' => 255),
                   'datetime'=> 'TIMESTAMP',
+                  'binary'=> 'BYTEA',
                 );
 
 
