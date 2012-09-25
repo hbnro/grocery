@@ -122,6 +122,12 @@ class Table extends Hasher
     $out = array();
     foreach ($this->tables() as $one) {
       $out []= $this->build_table($one, $this->columns($one));
+
+      if ($tmp = $this->indexes($one)) {
+        foreach ($tmp as $name => $set) {
+          $out []= $this->build_index($one, $name, $set);
+        }
+      }
     }
     return join(";\n", $out);
   }
