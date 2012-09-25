@@ -8,11 +8,6 @@ class PDO
   private $bm = NULL;
 
 
-  public function stats()
-  {
-    return $this->bm->all();
-  }
-
   public static function factory(array $params, $debugger)
   {
     switch ($params['scheme']) {
@@ -39,10 +34,17 @@ class PDO
     return $obj;
   }
 
+
+  public function stats()
+  {
+    return $this->bm->all();
+  }
+
   public function version()
   {
     $test = $this->res->getAttribute(\PDO::ATTR_SERVER_VERSION);
-    return $test['versionString'];
+
+    return isset($test['versionString']) ? $test['versionString'] : $test;
   }
 
   public function execute($sql)

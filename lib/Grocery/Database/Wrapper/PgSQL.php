@@ -9,11 +9,6 @@ class PgSQL
   private $res = NULL;
 
 
-  public function stats()
-  {
-    return $this->bm->all();
-  }
-
   public static function factory(array $params, $debugger)
   {
     $obj = new static;
@@ -27,6 +22,12 @@ class PgSQL
     $obj->res = pg_connect($conn);
 
     return $obj;
+  }
+
+
+  public function stats()
+  {
+    return $this->bm->all();
   }
 
   public function version()

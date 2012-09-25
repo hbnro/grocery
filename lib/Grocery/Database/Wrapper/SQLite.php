@@ -9,11 +9,6 @@ class SQLite
   private $res = NULL;
 
 
-  public function stats()
-  {
-    return $this->bm->all();
-  }
-
   public static function factory(array $params, $debugger)
   {
     $db_file = $params['host'] . $params['path'];
@@ -26,6 +21,7 @@ class SQLite
     $obj = new static;
     $obj->bm = $debugger;
     $obj->res = new \SQLite3($db_file);
+
     $obj->res->createfunction('concat', function () {
         return implode(func_get_args(), '');
       });
@@ -47,6 +43,12 @@ class SQLite
       }, 0);
 
     return $obj;
+  }
+
+
+  public function stats()
+  {
+    return $this->bm->all();
   }
 
   public function version()

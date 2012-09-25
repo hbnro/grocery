@@ -9,12 +9,7 @@ class MySQLi
   private $res = NULL;
 
 
-  public function stats()
-  {
-    return $this->bm->all();
-  }
-
-  final public static function factory(array $params, $debugger)
+  public static function factory(array $params, $debugger)
   {
     $host  = $params['host'];
     $host .= ! empty($params['port']) ? ":$params[port]" : '';
@@ -26,6 +21,12 @@ class MySQLi
     mysqli_select_db($obj->res, trim($params['path'], '/'));
 
     return $obj;
+  }
+
+
+  public function stats()
+  {
+    return $this->bm->all();
   }
 
   public function version()
