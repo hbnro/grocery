@@ -20,7 +20,7 @@ class PgSQL extends \Grocery\Database\SQL\Scheme
                   'ZONE' => 'numeric',
                   'DOUBLE' => 'float',
                   'REAL' => 'float',
-                  'BLOB' => 'binary',
+                  'BYTEA' => 'binary',
                 );
 
   public static $raw = array(
