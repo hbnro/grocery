@@ -13,7 +13,7 @@ class Helpers
 
 
 
-  public static function hydrate($table, array $columns)
+  public static function hydrate($table, array $columns, array $indexes = array())
   {
     $old = $table->columns();
 
@@ -54,6 +54,36 @@ class Helpers
       foreach (array_keys(array_diff_key($old, $columns)) as $one) {
         unset($table[$one]);
       }
+    }
+
+
+    $tmp =
+    $out = array();
+    $idx = $table->indexes();
+
+    foreach ($idx as $name => $set) {
+      foreach ($set['column'] as $one) {
+        $tmp[$one] = $set['unique'];
+      }
+    }
+
+    foreach ($indexes as $key => $val) {
+      $on = is_numeric($key) ? FALSE : (bool) $val;
+      $key = is_numeric($key) ? $val : $key;
+
+      if (isset($tmp[$key])) {
+        if ($on !== $tmp[$key]) {
+          $table[$key]->unindex('_');
+          $table[$key]->index('_', $on);
+        }
+      } else {
+        $table[$key]->index('_', $on);
+      }
+      $out []= $key;
+    }
+
+    foreach (array_diff(array_keys($tmp), $out) as $old) {
+      $table[$old]->unindex('_');
     }
   }
 
