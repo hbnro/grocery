@@ -123,10 +123,8 @@ class Table extends Hasher
     foreach ($this->tables() as $one) {
       $out []= $this->build_table($one, $this->columns($one));
 
-      if ($tmp = $this->indexes($one)) {
-        foreach ($tmp as $name => $set) {
-          $out []= $this->build_index($one, $name, $set);
-        }
+      foreach ($this->indexes($one) as $name => $set) {
+        $out []= $this->build_index($one, $name, $set);
       }
     }
     return join(";\n", $out);
