@@ -5,16 +5,14 @@ namespace Grocery;
 class Helpers
 {
 
-  public static function locked($table)
-  { // TODO: check locking
-  }
-
   public static function hydrate($table, array $columns)
   {
     $old = $table->columns();
 
     foreach ($columns as $key => $val) {
       if (isset($old[$key])) {
+        is_array($val) OR $val = array($val);
+
         if ( ! \Grocery\Helpers::is_assoc($val)) {
           @list($type, $length, $default, $not_null) = $val;
           $val = compact('type', 'length', 'default', 'not_null');
@@ -92,7 +90,7 @@ class Helpers
 
   public static function is_keyword($test)
   {
-    return preg_match('/^(?:and|not|x?or)$/i', $test) > 0;
+    return ($test == 'and') OR ($test == 'or');
   }
 
   public static function is_assoc($set)

@@ -121,15 +121,15 @@ class Scheme extends Query
 
   public function columns($of)
   {
+    $out = array();
     $test = $this->fetch_columns($of);
 
     foreach ($test as $key => $val) {
       $default     = ! empty(static::$types[$val['type']]) ? static::$types[$val['type']] : $val['type'];
       $val['type'] = strtolower($default);
-      $test[$key]  = $val;
+      $out[$key]  = $val;
     }
-
-    return $test;
+    return $out;
   }
 
   public function indexes($of)
