@@ -98,7 +98,12 @@ class SQLite extends \Grocery\Database\SQL\Scheme
 
   public function add_index($to, $name, array $column, $unique = FALSE)
   {
-    return $this->execute(sprintf('CREATE%sINDEX IF NOT EXISTS "%s" ON "%s" ("%s")', $unique ? ' UNIQUE ' : ' ', $name, $to, join('", "', $column)));
+    return $this->execute($this->build_index($to, $name, compact('column', 'unique')));
+  }
+
+  public function build_index($to, $name, array $params)
+  {
+    return sprintf('CREATE%sINDEX IF NOT EXISTS "%s" ON "%s" ("%s")', $params['unique'] ? ' UNIQUE ' : ' ', $name, $to, join('", "', $params['column']));
   }
 
   public function remove_index($from, $name)
