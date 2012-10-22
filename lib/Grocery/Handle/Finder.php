@@ -36,7 +36,7 @@ class Finder extends Hasher
   public function __get($key)
   {
     if ( ! isset($this->$key)) {
-      throw new \Exception("Field '$this'.'$key' does not exists.");
+      throw new \Exception("Field '$this'.'$key' does not exists");
     }
 
     $this->offset = $key;
@@ -52,22 +52,22 @@ class Finder extends Hasher
       unset($this[$key]);
     } elseif (is_string($value)) {
       if ( ! $exists) {
-        throw new \Exception("Field '$this'.'$key' does not exists.");
+        throw new \Exception("Field '$this'.'$key' does not exists");
       } elseif (strlen(trim($value)) === 0) {
-        throw new \Exception("Cannot rename the field '$this'.'$key' to $value'.");
+        throw new \Exception("Cannot rename the field '$this'.'$key' to $value'");
       } elseif (isset($this->$value)) {
-        throw new \Exception("Cannot rename the field '$this'.'$key' to '$value' (already exists).");
+        throw new \Exception("Cannot rename the field '$this'.'$key' to '$value' (already exists)");
       }
       $this->rename_column($key, $value);
     } elseif (is_array($value)) {
       if (sizeof($value = (array) $value) === 0) {
-        throw new \Exception("Missing field definition for '$this'.'$key'.");
+        throw new \Exception("Missing field definition for '$this'.'$key'");
       }
       isset($this->$key) ? $this->change_column($key, $value) : $this->add_column($key, $value);
     } elseif ($value instanceof \Closure) {
       echo "FILTER TO: $this.$key ";
     } else {
-      throw new \Exception("Nothing to do with '$value' on '$this'.'$key'.");
+      throw new \Exception("Nothing to do with '$value' on '$this'.'$key'");
     }
   }
 
@@ -79,7 +79,7 @@ class Finder extends Hasher
   public function __unset($key)
   {
     if ( ! isset($this[$key])) {
-      throw new \Exception("Field '$this'.'$key' does not exists.");
+      throw new \Exception("Field '$this'.'$key' does not exists");
     }
     $this->remove_column($key);
   }
@@ -109,11 +109,11 @@ class Finder extends Hasher
           case 'count';
             return (int) $this->select('COUNT(*)', $params['where'], $params)->result();
           default;
-            throw new \Exception("Invalid parameters on '$method()'.");
+            throw new \Exception("Invalid parameters on '$method()'");
         }
       case in_array($method, static::$chained);
         if (sizeof($arguments) === 0) {
-          throw new \Exception("Missing arguments for '$method()'.");;
+          throw new \Exception("Missing arguments for '$method()'");;
         } elseif (isset($this->params[$method])) {
           array_unshift($arguments, $this->params[$method]);
         }

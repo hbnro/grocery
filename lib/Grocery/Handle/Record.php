@@ -16,7 +16,7 @@ class Record extends Hasher
   public function __get($key)
   {
     if ( ! isset($this->$key)) {
-      throw new \Exception("Unknown property '$key'.");
+      throw new \Exception("Unknown property '$key'");
     }
     return $this->data[$key];
   }
@@ -24,7 +24,7 @@ class Record extends Hasher
   public function __set($key, $value)
   {
     if ( ! isset($this->$key)) {
-      throw new \Exception("Unknown property '$key'.");
+      throw new \Exception("Unknown property '$key'");
     }
     $this->data[$key] = $value;
   }
@@ -37,14 +37,14 @@ class Record extends Hasher
   public function __unset($key)
   {
     if ( ! isset($this->$key)) {
-      throw new \Exception("Unknown property '$key'.");
+      throw new \Exception("Unknown property '$key'");
     }
     unset($this->data[$key]);
   }
 
   public function __call($method, $arguments)
   {
-    throw new \Exception("Cannot execute '$method()'.");
+    throw new \Exception("Cannot execute '$method()'");
   }
 
   public function __toString()

@@ -18,24 +18,24 @@ class Table extends Hasher
       unset($this[$key]);
     } elseif (is_string($value)) {
       if ( ! $exists) {
-        throw new \Exception("Table '$key' does not exists.");
+        throw new \Exception("Table '$key' does not exists");
       } elseif (strlen(trim($value)) === 0) {
-        throw new \Exception("Cannot rename the table '$key' to '$value'.");
+        throw new \Exception("Cannot rename the table '$key' to '$value'");
       } elseif (isset($this->$value)) {
-        throw new \Exception("Cannot rename the table '$key' to '$value' (already exists).");
+        throw new \Exception("Cannot rename the table '$key' to '$value' (already exists)");
       }
       $this->rename($key, $value);
     } elseif (is_array($value)) {
       if ($exists) {
-        throw new \Exception("Table '$key' already exists.");
+        throw new \Exception("Table '$key' already exists");
       } elseif (sizeof($value) === 0) {
-        throw new \Exception("Empty fields for '$key'.");
+        throw new \Exception("Empty fields for '$key'");
       } elseif ( ! \Grocery\Helpers::is_assoc($value)) {
-        throw new \Exception("Invalid fields for '$key'.");
+        throw new \Exception("Invalid fields for '$key'");
       }
       $this->create($key, $value);
     } else {
-      throw new \Exception("Nothing to do with '$value' on '$key'.");
+      throw new \Exception("Nothing to do with '$value' on '$key'");
     }
   }
 
@@ -47,7 +47,7 @@ class Table extends Hasher
   public function __unset($key)
   {
     if ( ! isset($this->$key)) {
-      throw new \Exception("Table '$key' does not exists.");
+      throw new \Exception("Table '$key' does not exists");
     }
     $this->drop($key);
   }
