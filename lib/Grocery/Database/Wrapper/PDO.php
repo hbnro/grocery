@@ -105,10 +105,9 @@ class PDO
     return $res ? $res->rowCount() : FALSE;
   }
 
-  public function last_inserted_id()
+  public function last_inserted_id($res, $table, $column)
   {
-    // TODO: support for postgres?
-    return $this->res->lastInsertId();
+    return $this->pdo->lastInsertId("{$table}_{$column}_seq");
   }
 
 }
