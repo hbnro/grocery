@@ -266,14 +266,14 @@ class Dump extends Base
 
   protected function query_repare($test, $pk = NULL)
   {
-    if (method_exists($this, 'ensure_limit')) {
-      $test = preg_replace_callback(self::$regex['limit'], array($this, 'ensure_limit'), $test);
-    }
-
-    $test = preg_replace(self::$regex['delete'], 'DELETE FROM \\1 WHERE 1=1', $test);
-
     if (method_exists($this, 'ensure_id') && $pk) {
       $test = $this->ensure_id($test, $pk);
+    } else {
+      if (method_exists($this, 'ensure_limit')) {
+        $test = preg_replace_callback(self::$regex['limit'], array($this, 'ensure_limit'), $test);
+      }
+
+      $test = preg_replace(self::$regex['delete'], 'DELETE FROM \\1 WHERE 1=1', $test);
     }
 
     return $test;
