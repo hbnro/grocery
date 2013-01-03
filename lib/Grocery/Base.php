@@ -69,7 +69,8 @@ class Base
     $driver_klass = $pdo ? '\\Grocery\\Database\\Wrapper\\PDO' : str_replace('@', 'Wrapper', $base_klass);
     $scheme_klass = str_replace('@', 'Scheme', $base_klass);
 
-    $wrapper = $driver_klass::factory($params, new \Grocery\Database\Debug);
+    $debugger = new \Grocery\Database\Debug(\Grocery\Config::get('logger'));
+    $wrapper = $driver_klass::factory($params, $debugger);
 
     if ($raw OR method_exists($driver_klass, 'select')) {
       return $wrapper;

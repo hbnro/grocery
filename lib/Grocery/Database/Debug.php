@@ -5,12 +5,25 @@ namespace Grocery\Database;
 class Debug
 {
 
+  private $logger = NULL;
+
   private $queries = array(
             'sql' => array(),
             'ms' => array(),
           );
 
 
+
+  public function __construct($callback)
+  {
+    $this->logger = $callback;
+  }
+
+
+  public function debug($test)
+  {
+    is_callable($this->logger) && call_user_func($this->logger, $test);
+  }
 
   public function last($key = FALSE)
   {
@@ -19,6 +32,7 @@ class Debug
 
   public function start($sql)
   {
+    $this->debug(" => $sql");
     $this->queries['sql'] []= $sql;
     $this->queries['ms'] []= microtime(TRUE);
   }
@@ -30,6 +44,7 @@ class Debug
     $old = array_pop($test);
     $new = microtime(TRUE) - $old;
 
+    $this->debug(" <= $new");
     $test []= $new;
   }
 

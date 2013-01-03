@@ -6,6 +6,8 @@ class Config
 {
 
   private static $bag = array(
+                    // debug
+                    'logger' => '',
                     // scheme setup
                     'unserialize' => 'ignore',
                   );
