@@ -85,9 +85,9 @@ class Dump extends Base
       $sql .= "\nGROUP BY";
 
       if (is_array($options['group'])) {
-        $sql .= "\n" . join(', ', array_map(array('sql', 'names'), $options['group']));
+        $sql .= "\n " . join(",\n ", array_map(array($this, 'protect_names'), $options['group']));
       } else {
-        $sql .= "\n" . $this->protect_names($options['group']);
+        $sql .= "\n " . $this->protect_names($options['group']);
       }
     }
 
@@ -101,13 +101,13 @@ class Dump extends Base
         }
 
         if (is_numeric($one)) {
-          $sql .= "\n";
+          $sql .= "\n ";
           $sql .= $set == 'random' ? static::$random : $this->protect_names($set[0]) . " $set[1]";
           continue;
         }
 
         $one  = $this->protect_names($one);
-        $sql .= "\n$one ";
+        $sql .= "\n $one ";
         $sql .= strtoupper($set);
       }
     }
@@ -299,7 +299,7 @@ class Dump extends Base
       $set[$i] = join('.', $test);
     }
 
-    return join(', ', $set);
+    return join(",\n ", $set);
   }
 
   protected function fixate_string($test, $alone = FALSE)
