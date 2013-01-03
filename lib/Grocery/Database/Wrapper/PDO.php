@@ -105,9 +105,9 @@ class PDO
     return $res ? $res->rowCount() : FALSE;
   }
 
-  public function last_inserted_id($res, $table, $column)
+  public function last_inserted_id($res)
   {
-    return $this->pdo->lastInsertId("{$table}_{$column}_seq");
+    return $this->fetch_result($res);
   }
 
 }
