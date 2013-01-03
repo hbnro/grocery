@@ -206,5 +206,10 @@ class PgSQL extends \Grocery\Database\SQL\Scheme
     return $test;
   }
 
+  public function ensure_id($test, $pk)
+  {
+    return "$test RETURNING $pk";
+  }
+
 }
 

@@ -122,15 +122,15 @@ class Dump extends Base
     return $sql;
   }
 
-  protected function build_insert($table, array $values)
+  protected function build_insert($table, array $values, $primary_key = NULL)
   {
     $sql  = "INSERT INTO\n" . $this->build_fields($table);
     $sql .= $this->build_values($values, TRUE);
 
-    return $sql;
+    return $this->query_repare($sql, $primary_key);
   }
 
-  protected function build_delete($table, array $where = array(), $limit = 0)
+  protected function build_delete($table, array $where = array(), $limit = 0, $primary_key = NULL)
   {
     $sql = "DELETE FROM\n" . $this->build_fields($table);
 
@@ -139,17 +139,17 @@ class Dump extends Base
     }
     $sql .= $limit > 0 ? "\nLIMIT $limit" : '';
 
-    return $sql;
+    return $this->query_repare($sql, $primary_key);
   }
 
-  protected function build_update($table, array $fields, array $where  = array(), $limit = 0)
+  protected function build_update($table, array $fields, array $where  = array(), $limit = 0, $primary_key = NULL)
   {
     $sql  = "UPDATE\n" . $this->build_fields($table);
     $sql .= "\nSET\n" . $this->build_values($fields, FALSE);
     $sql .= "\nWHERE\n" . $this->build_where($where);
     $sql .= $limit > 0 ? "\nLIMIT {$limit}" : '';
 
-    return $sql;
+    return $this->query_repare($sql, $primary_key);
   }
 
   protected function build_fields($values)
@@ -264,13 +264,17 @@ class Dump extends Base
     return join("\n$operator\n", $sql);
   }
 
-  protected function query_repare($test)
+  protected function query_repare($test, $pk = NULL)
   {
     if (method_exists($this, 'ensure_limit')) {
       $test = preg_replace_callback(self::$regex['limit'], array($this, 'ensure_limit'), $test);
     }
 
     $test = preg_replace(self::$regex['delete'], 'DELETE FROM \\1 WHERE 1=1', $test);
+
+    if (method_exists($this, 'ensure_id') && $pk) {
+      $test = $this->ensure_id($test, $pk);
+    }
 
     return $test;
   }

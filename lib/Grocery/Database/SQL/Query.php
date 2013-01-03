@@ -12,17 +12,17 @@ class Query extends Dump
 
   public function insert($table, array $values, $column = NULL)
   {
-    return $this->inserted($this->query($this->build_insert($table, $values)), $table, $column);
+    return $this->inserted($this->query($this->build_insert($table, $values, $column)));
   }
 
-  public function delete($table, array $where = array(), $limit = 0)
+  public function delete($table, array $where = array(), $limit = 0, $column = NULL)
   {
-    return $this->affected($this->query($this->build_delete($table, $where, $limit)));
+    return $this->affected($this->query($this->build_delete($table, $where, $limit, $column)));
   }
 
-  public function update($table, array $fields, array $where = array(), $limit = 0)
+  public function update($table, array $fields, array $where = array(), $limit = 0, $column = NULL)
   {
-    return $this->affected($this->query($this->build_update($table, $fields, $where, $limit)));
+    return $this->affected($this->query($this->build_update($table, $fields, $where, $limit, $column)));
   }
 
   public function prepare($sql, array $vars = array())
@@ -44,7 +44,7 @@ class Query extends Dump
       $sql  = $this->prepare($sql, $args);
     }
 
-    $out = $this->execute($this->query_repare($sql));
+    $out = $this->execute($sql);
 
     if ($message = $this->has_error()) {
       throw new \Exception("Database failure on '$message'.\n---\n$sql");
@@ -94,9 +94,9 @@ class Query extends Dump
     return $this->affected_rows($result);
   }
 
-  public function inserted($result, $table = NULL, $column = NULL)
+  public function inserted($result)
   {
-    return $this->last_inserted_id($result, $table, $column);
+    return $this->last_inserted_id($result);
   }
 
 }
