@@ -14,7 +14,7 @@ class SQLite
     $db_file = $params['host'] . $params['path'];
 
     if ( ! is_file($db_file) && ($db_file <> ':memory:')) {
-      die("file not exists!!! $db_file");
+      throw new \Exception("The file '$db_file' does not exists");
     }
 
 
