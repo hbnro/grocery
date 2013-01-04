@@ -32,9 +32,12 @@ class Debug
 
   public function start($sql)
   {
-    $this->debug(" => $sql");
     $this->queries['sql'] []= $sql;
     $this->queries['ms'] []= microtime(TRUE);
+
+    $sql = join("\n    ", explode("\n", $sql));
+
+    $this->debug(" => $sql");
   }
 
   public function stop()
