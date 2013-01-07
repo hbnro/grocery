@@ -116,7 +116,7 @@ class Dump extends Base
     $offset = ! empty($options['offset']) ? $options['offset'] : 0;
 
     if ($limit > 0) {
-      $sql .= "\nLIMIT " . ($offset > 0 ? "$offset," : '') . $limit;
+      $sql .= "\nLIMIT " . ($offset > 0 ? "$offset, " : '') . $limit;
     }
 
     return $sql;

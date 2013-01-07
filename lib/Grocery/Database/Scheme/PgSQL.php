@@ -193,7 +193,7 @@ class PgSQL extends \Grocery\Database\SQL\Scheme
 
   public function ensure_limit($test)
   {
-    return ! empty($test[2]) ? "\nLIMIT $test[2] OFFSET $test[1]" : "\nLIMIT $test[1]\n";
+    return ! empty($test[2]) ? "\nLIMIT $test[2] OFFSET $test[1]" : "\nLIMIT $test[1]";
   }
 
   public function ensure_type($test)
