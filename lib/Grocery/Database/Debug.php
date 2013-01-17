@@ -20,11 +20,6 @@ class Debug
   }
 
 
-  public function debug($test)
-  {
-    is_callable($this->logger) && call_user_func($this->logger, $test);
-  }
-
   public function last($key = FALSE)
   {
     return ! empty($this->queries[$key]) ? end($this->queries[$key]) : FALSE;
@@ -34,21 +29,13 @@ class Debug
   {
     $this->queries['sql'] []= $sql;
     $this->queries['ms'] []= microtime(TRUE);
-
-    $sql = join("\n    ", explode("\n", $sql));
-
-    $this->debug(" => $sql");
   }
 
   public function stop()
   {
-    $test =& $this->queries['ms'];
-
-    $old = array_pop($test);
-    $new = microtime(TRUE) - $old;
-
-    $this->debug(" <= $new");
-    $test []= $new;
+    if (is_callable($this->logger)) {
+      call_user_func($this->logger, $this->last('sql'), microtime(TRUE) - $this->last('ms'));
+    }
   }
 
   public function all()
