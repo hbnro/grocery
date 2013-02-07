@@ -11,7 +11,6 @@ class Dump extends Base
                   );
 
 
-
   protected function build_field($type, $length = 0, $default = NULL, $not_null = FALSE)
   {
     $tmp = static::$raw;
@@ -74,20 +73,29 @@ class Dump extends Base
 
   protected function build_select($table, $fields = '*', array $where = array(), array $options = array())
   {
-    $sql  = "SELECT\n" . $this->build_fields($fields);
-    $sql .= "\nFROM\n" . $this->build_fields($table);
+    if ( ! empty($options['join'])) {
+      $sql = $this->build_joins($table, $fields, $options['join']);
+    } else {
+      $sql  = "SELECT\n" . $this->build_fields($fields);
+      $sql .= "\nFROM\n" . $this->build_fields($table);
+    }
 
     if ( ! empty($where)) {
-      $sql .= "\nWHERE\n" . $this->build_where($where);
+      $sql .= "\nWHERE\n" . $this->build_where($where, 'AND', $table);
     }
 
     if ( ! empty($options['group'])) {
       $sql .= "\nGROUP BY";
 
       if (is_array($options['group'])) {
-        $sql .= "\n " . join(",\n ", array_map(array($this, 'protect_names'), $options['group']));
+        $sub = array();
+
+        foreach ($options['group'] as $one) {
+          $sub []= $this->protect_names("$table.$one");
+        }
+        $sql .= "\n " . join(",\n ", $sub);
       } else {
-        $sql .= "\n " . $this->protect_names($options['group']);
+        $sql .= "\n " . $this->protect_names("$table.$options[group]");
       }
     }
 
@@ -102,13 +110,12 @@ class Dump extends Base
 
         if (is_numeric($one)) {
           $sql .= "\n ";
-          $sql .= $set == 'random' ? static::$random : $this->protect_names($set[0]) . " $set[1]";
+          $sql .= $set == 'random' ? static::$random : $this->protect_names("$table.$set[0]") . " $set[1]";
           continue;
         }
 
-        $one  = $this->protect_names($one);
-        $sql .= "\n $one ";
-        $sql .= strtoupper($set);
+        $one  = $this->protect_names("$table.$one");
+        $sql .= "\n $one " . strtoupper($set);
       }
     }
 
@@ -150,6 +157,45 @@ class Dump extends Base
     $sql .= $limit > 0 ? "\nLIMIT {$limit}" : '';
 
     return $this->query_repare($sql, $primary_key);
+  }
+
+  protected function build_joins($table, array $fields, array $set)
+  {
+    $sub =
+    $out = array();
+
+    if ( ! isset($set[0])) {
+      $set = array($set);
+    }
+
+
+    foreach ($fields as $k => $v) {
+      is_numeric($k) && $sub []= "$table.$v";
+      is_numeric($k) OR $sub["$table.$k"] = $v;
+    }
+
+    foreach ($set as $one) {
+      // TODO: throw exception if no-defaults?
+      $name = ! empty($one['table']) ? $one['table'] : 'unknown';
+
+      isset($one['select']) OR $one['select'] = '*';
+
+      foreach ((array) $one['select'] as $key => $val) {
+        is_numeric($key) && $sub []= "$name.$val";
+        is_numeric($key) OR $sub["$name.$key"] = $val;
+      }
+
+      $use = ! empty($one['use']) ? strtoupper($one['use']) : 'LEFT';
+      $fk = $this->protect_names( ! empty($one['field']) ? $one['field'] : "{$name}_id");
+
+      $out []= "$use JOIN " . $this->protect_names($name) . ' ON';
+      $out []= ' ' . $this->protect_names("$name.id") . ' = ' . $this->protect_names("$table.$fk");
+    }
+
+    array_unshift($out, "FROM\n" . $this->build_fields($table));
+    array_unshift($out, "SELECT\n" . $this->build_fields($sub));
+
+    return join("\n", $out);
   }
 
   protected function build_fields($values)
@@ -215,10 +261,11 @@ class Dump extends Base
     return join('', $sql);
   }
 
-  protected function build_where($test, $operator = 'AND')
+  protected function build_where($test, $operator = 'AND', $supertable = FALSE)
   {
-    $sql      = array();
-    $operator = strtoupper($operator);
+    $sql        = array();
+    $operator   = strtoupper($operator);
+    $sub_prefix = $supertable ? $this->protect_names($supertable) . '.' : '';
 
     foreach ($test as $key => $val) {
       if (is_numeric($key)) {
@@ -230,16 +277,16 @@ class Dump extends Base
             array_unshift($val, $raw) && $sql []= join("\n", $val);
           }
         } else {
-          $sql []= is_array($val) ? $this->build_where($val, $operator) : $val;
+          $sql []= is_array($val) ? $this->build_where($val, $operator, $supertable) : $val;
         }
       } elseif (\Grocery\Helpers::is_keyword($key)) {
-        $sql []= '(' . trim($this->build_where($val, strtoupper($key))) . ')';
+        $sql []= '(' . trim($this->build_where($val, strtoupper($key), $supertable)) . ')';
       } elseif (preg_match('/_(?:and|or)_/i', $key, $match)) {
         $sub = array();
         foreach (explode($match[0], $key) as $one) {
           $sub[$one] = $val;
         }
-        $sql []= '(' . trim($this->build_where($sub, strtoupper(trim($match[0], '_')))) . ')';
+        $sql []= '(' . trim($this->build_where($sub, strtoupper(trim($match[0], '_')), $supertable)) . ')';
       } elseif (preg_match('/^(.+?)(?:\s+(!=?|[<>]=?|<>|NOT|R?LIKE)\s*)?$/', $key, $match)) {
         $sub = '';
         $key = $this->protect_names($match[1]);
@@ -253,10 +300,10 @@ class Dump extends Base
 
         if (is_array($val) && (sizeof($val) > 1)) {
           $key  .= in_array($sub, array('!=', '<>')) ? ' NOT' : '';
-          $sql []= " $key IN(" . join(', ', $val) . ")";
+          $sql []= " $sub_prefix$key IN(" . join(', ', $val) . ")";
         } else {
           $val   = is_array($val) ? array_shift($val) : $val;
-          $sql []= " $key $sub $val";
+          $sql []= " $sub_prefix$key $sub $val";
         }
       }
     }
