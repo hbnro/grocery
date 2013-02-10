@@ -48,7 +48,7 @@ class Dump extends Base
     $type .= $not_null ? ' NOT NULL' : '';
 
     if ($default) {
-      $type .= ' DEFAULT ' . $this->fixate_string($default);
+      $type .= ' DEFAULT ' . $this->fixate_value($default);
     }
 
     return $type;
@@ -241,7 +241,7 @@ class Dump extends Base
       if (is_numeric($key)) {
         $out []= $val;
       } else {
-        $val = $this->fixate_string($val, TRUE);
+        $val = $this->fixate_value($val);
         $val = is_numeric($val) ? $val : $val;
 
         if ($insert) {
@@ -294,7 +294,7 @@ class Dump extends Base
         if ($val === NULL) {
           $sub = 'IS NULL';
         } else {
-          $val = $this->fixate_string($val, FALSE);
+          $val = $this->fixate_value($val);
           $sub = ! empty($match[2]) ? ($match[2] == '!' ? '!=' : $match[2]) : '=';
         }
 
@@ -349,21 +349,10 @@ class Dump extends Base
     return join(",\n ", $set);
   }
 
-  protected function fixate_string($test, $alone = FALSE)
+  protected function fixate_value($test, $map = FALSE)
   {
-    if (is_array($test)) {
-      if ($alone && sizeof($test) == 1) {
-        $col = key($test);
-        $val = $test[$col];
-
-        if ( ! is_numeric($col)) {
-          return $this->protect_names("$val.$col");
-        } else {
-          return $this->fixate_string($val, TRUE);
-        }
-      } else {
-        return array_map(array($this, 'fixate_string'), $test);
-      }
+    if (is_array($test) && $map) {
+      return array_map(array($this, 'fixate_value'), $test);
     } elseif (is_string($test)) {
       return "'" . $this->real_escape($test) . "'";
     }

@@ -28,9 +28,9 @@ class Query extends Dump
   public function prepare($sql, array $vars = array())
   {
     if (\Grocery\Helpers::is_assoc($vars)) {
-      $sql = strtr($sql, $this->fixate_string($vars, FALSE));
+      $sql = strtr($sql, $this->fixate_value($vars, TRUE));
     } else {
-      $args = $this->fixate_string($vars, FALSE);
+      $args = $this->fixate_value($vars, TRUE);
       $sql  = preg_replace('/((?<!\\\)\?)/e', 'array_shift($args);', $sql);
     }
 
