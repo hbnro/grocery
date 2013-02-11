@@ -294,7 +294,7 @@ class Dump extends Base
         if ($val === NULL) {
           $sub = 'IS NULL';
         } else {
-          $val = $this->fixate_value($val);
+          $val = $this->fixate_value($val, TRUE);
           $sub = ! empty($match[2]) ? ($match[2] == '!' ? '!=' : $match[2]) : '=';
         }
 
