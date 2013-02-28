@@ -51,9 +51,9 @@ class PDO
   {
     $this->bm->start($sql);
     if (strtolower(substr(trim($sql), 0, 7)) === 'update') {
-      $out = $this->res->exec($sql);
+      $out = @$this->res->exec($sql);
     }
-    $out = $this->res->query($sql);
+    $out = @$this->res->query($sql);
     $this->bm->stop();
     return $out;
   }

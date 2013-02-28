@@ -60,7 +60,7 @@ class SQLite
   public function execute($sql)
   {
     $this->bm->start($sql);
-    $out = $this->res->query($sql);
+    $out = @$this->res->query($sql);
     $this->bm->stop();
 
     return $out;
