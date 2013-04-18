@@ -26,8 +26,6 @@ class Base
                     'sqlite' => '\\Grocery\\Database\\@\\SQLite',
                   );
 
-
-
   public static function connect($to)
   {
     if ( ! preg_match(static::$regex, $to)) {
@@ -51,6 +49,7 @@ class Base
 
       static::$multi[$to] = static::factory($params);
     }
+
     return static::$multi[$to];
   }
 
@@ -61,7 +60,6 @@ class Base
     if ( ! array_key_exists($params['scheme'], static::$available)) {
       throw new \Exception("Scheme not available for '$params[scheme]'");
     }
-
 
     $pdo = ($params['fragment'] == 'pdo') OR array_key_exists('pdo', $params);
 

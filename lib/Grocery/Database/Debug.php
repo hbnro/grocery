@@ -12,13 +12,10 @@ class Debug
             'ms' => array(),
           );
 
-
-
   public function __construct($callback)
   {
     $this->logger = $callback;
   }
-
 
   public function last($key = FALSE)
   {

@@ -12,8 +12,6 @@ class Config
                     'unserialize' => 'ignore',
                   );
 
-
-
   public static function set($key, $value = NULL)
   {
     static::$bag[$key] = $value;

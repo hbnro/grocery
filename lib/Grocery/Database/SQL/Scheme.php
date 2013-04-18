@@ -37,11 +37,11 @@ class Scheme extends Query
     $old  = include $from;
     $test = ob_get_clean();
 
-
     if ( ! is_array($old)) {
       if ($raw) {
         return array_map(array($this, 'execute'), \Grocery\Helpers::sql_split($test));
       }
+
       return FALSE;
     }
 
@@ -116,6 +116,7 @@ class Scheme extends Query
         $out []= $one;
       }
     }
+
     return $out;
   }
 
@@ -129,6 +130,7 @@ class Scheme extends Query
       $val['type'] = strtolower($default);
       $out[$key]  = $val;
     }
+
     return $out;
   }
 

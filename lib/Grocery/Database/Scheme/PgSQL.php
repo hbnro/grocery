@@ -30,11 +30,10 @@ class PgSQL extends \Grocery\Database\SQL\Scheme
                   'binary'=> 'BYTEA',
                 );
 
-
-
   public function rename($from, $to)
   {
     $this->execute(sprintf('ALTER TABLE "%s" RENAME TO "%s"', $from, $to));
+
     return $this->remove_index($to, "{$from}_pkey");
   }
 
@@ -203,6 +202,7 @@ class PgSQL extends \Grocery\Database\SQL\Scheme
     } elseif ($test === NULL) {
       $test = 'NULL';
     }
+
     return $test;
   }
 
@@ -212,4 +212,3 @@ class PgSQL extends \Grocery\Database\SQL\Scheme
   }
 
 }
-

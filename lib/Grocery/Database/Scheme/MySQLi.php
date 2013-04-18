@@ -40,7 +40,10 @@ class MySQLi extends \Grocery\Database\SQL\Scheme
                   'binary' => 'BLOB',
                 );
 
-
+  private static $rename_col = array(
+                    '/^VARCHAR$/' => 'VARCHAR(255)',
+                    '/^INT(?:EGER)$/' => 'INT(11)',
+                  );
 
   public function rename($from, $to)
   {
@@ -59,15 +62,9 @@ class MySQLi extends \Grocery\Database\SQL\Scheme
 
   public function rename_column($from, $name, $to)
   {
-    static $map = array(
-              '/^VARCHAR$/' => 'VARCHAR(255)',
-              '/^INT(?:EGER)$/' => 'INT(11)',
-            );
-
-
     $set  = $this->columns($from);
     $type = $this->build_field($set[$name]['type'], $set[$name]['length']);
-    $type = preg_replace(array_keys($map), $map, $type);
+    $type = preg_replace(array_keys(static::$rename_col), static::$rename_col, $type);
 
     return $this->execute(sprintf('ALTER TABLE `%s` CHANGE `%s` `%s` %s', $from, $name, $to, $type));
   }
@@ -165,7 +162,8 @@ class MySQLi extends \Grocery\Database\SQL\Scheme
     return $out;
   }
 
-  public function quote_string($test) {
+  public function quote_string($test)
+  {
     return "`$test`";
   }
 
@@ -181,6 +179,7 @@ class MySQLi extends \Grocery\Database\SQL\Scheme
     } elseif ($test === NULL) {
       $test = 'NULL';
     }
+
     return $test;
   }
 

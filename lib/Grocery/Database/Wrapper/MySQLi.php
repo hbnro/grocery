@@ -7,7 +7,7 @@ class MySQLi
 
   private $bm = NULL;
   private $res = NULL;
-
+  private $vval = NULL;
 
   public static function factory(array $params, $debugger)
   {
@@ -23,7 +23,6 @@ class MySQLi
     return $obj;
   }
 
-
   public function stats()
   {
     return $this->bm->all();
@@ -31,13 +30,11 @@ class MySQLi
 
   public function version()
   {
-    static $v = NULL;
-
-    if (is_null($v)) {
-      $v = $this->fetch_result(mysqli_query($this->res, 'SELECT version()'));
+    if ($this->vval === NULL) {
+      $this->vval = $this->fetch_result(mysqli_query($this->res, 'SELECT version()'));
     }
 
-    return $v;
+    return $this->vval;
   }
 
   public function execute($sql)
@@ -45,6 +42,7 @@ class MySQLi
     $this->bm->start($sql);
     $out = @mysqli_query($this->res, $sql);
     $this->bm->stop();
+
     return $out;
   }
 

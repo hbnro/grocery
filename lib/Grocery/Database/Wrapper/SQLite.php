@@ -8,7 +8,6 @@ class SQLite
   private $bm = NULL;
   private $res = NULL;
 
-
   public static function factory(array $params, $debugger)
   {
     $db_file = $params['host'] . $params['path'];
@@ -16,7 +15,6 @@ class SQLite
     if ( ! is_file($db_file) && ($db_file <> ':memory:')) {
       throw new \Exception("The file '$db_file' does not exists");
     }
-
 
     $obj = new static;
     $obj->bm = $debugger;
@@ -45,7 +43,6 @@ class SQLite
     return $obj;
   }
 
-
   public function stats()
   {
     return $this->bm->all();
@@ -54,6 +51,7 @@ class SQLite
   public function version()
   {
     $test = $this->res->version();
+
     return $test['versionString'];
   }
 

@@ -7,7 +7,6 @@ class PDO
 
   private $bm = NULL;
 
-
   public static function factory(array $params, $debugger)
   {
     switch ($params['scheme']) {
@@ -34,7 +33,6 @@ class PDO
     return $obj;
   }
 
-
   public function stats()
   {
     return $this->bm->all();
@@ -55,6 +53,7 @@ class PDO
     }
     $out = @$this->res->query($sql);
     $this->bm->stop();
+
     return $out;
   }
 
@@ -66,6 +65,7 @@ class PDO
   public function has_error()
   {
     $test = $this->res->errorInfo();
+
     return $test[0] == '00000' ? FALSE : $test[2];
   }
 
@@ -86,7 +86,7 @@ class PDO
 
   public function count_rows($res)
   {
-    if ( ! $res) {
+    if (! $res) {
       return FALSE;
     }
 
@@ -97,6 +97,7 @@ class PDO
       $tmp = $this->execute("SELECT COUNT(*) FROM $match[1]");
       $out = $this->fetch_result($tmp);
     }
+
     return (int) $out;
   }
 

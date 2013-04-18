@@ -31,8 +31,6 @@ class Finder extends Hasher
                     'where' => array(),
                   );
 
-
-
   public function __get($key)
   {
     if ( ! isset($this->$key)) {
@@ -51,7 +49,7 @@ class Finder extends Hasher
     if ($value === NULL) {
       unset($this[$key]);
     } elseif (is_string($value)) {
-      if ( ! $exists) {
+      if (! $exists) {
         throw new \Exception("Field '$this'.'$key' does not exists");
       } elseif (strlen(trim($value)) === 0) {
         throw new \Exception("Cannot rename the field '$this'.'$key' to $value'");
@@ -93,6 +91,7 @@ class Finder extends Hasher
 
         switch ($method) {
           case 'all';
+
             return $this->select($params['select'] ?: '*', $params['where'], $params)->fetch_all();
           case 'each';
             @list($lambda) = $arguments;
@@ -107,6 +106,7 @@ class Finder extends Hasher
               return;
             }
           case 'count';
+
             return (int) $this->select('COUNT(*)', $params['where'], $params)->result();
           default;
             throw new \Exception("Invalid parameters on '$method()'");
@@ -126,15 +126,17 @@ class Finder extends Hasher
         return $this;
       case 'index';
         @list($name, $unique) = $arguments;
+
         return $this->add_index("{$this}_{$this->offset}_{$name}_idx", array($this->offset), !! $unique);
       case 'unindex';
         @list($name) = $arguments;
+
         return $this->remove_index("{$this}_{$this->offset}_{$name}_idx", (string) $this);
       default;
+
         return parent::__call($method, $arguments);
     }
   }
-
 
   public function getIterator()
   {

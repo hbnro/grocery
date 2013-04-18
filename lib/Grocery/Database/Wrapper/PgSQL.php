@@ -7,7 +7,7 @@ class PgSQL
 
   private $bm = NULL;
   private $res = NULL;
-
+  private $vval = NULL;
 
   public static function factory(array $params, $debugger)
   {
@@ -24,7 +24,6 @@ class PgSQL
     return $obj;
   }
 
-
   public function stats()
   {
     return $this->bm->all();
@@ -32,12 +31,11 @@ class PgSQL
 
   public function version()
   {
-    static $v = NULL;
-
-    if (is_null($v)) {
-      $v = pg_fetch_row(pg_query($this->res, 'SELECT version()'), 0);
+    if ($this->vval === NULL) {
+      $this->vval = pg_fetch_row(pg_query($this->res, 'SELECT version()'), 0);
     }
-    return $v;
+
+    return $this->vval;
   }
 
   public function execute($sql)
@@ -45,6 +43,7 @@ class PgSQL
     $this->bm->start($sql);
     $out = @pg_query($this->res, $sql);
     $this->bm->stop();
+
     return $out;
   }
 
@@ -96,6 +95,7 @@ class PgSQL
         ($val === 't') && $set[$key] = TRUE;
       }
     }
+
     return $set;
   }
 }

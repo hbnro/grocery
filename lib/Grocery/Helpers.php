@@ -11,8 +11,6 @@ class Helpers
                     'timestamp' => 'datetime',
                   );
 
-
-
   public static function hydrate($table, array $columns, array $indexes = array())
   {
     $old = $table->columns();
@@ -30,7 +28,6 @@ class Helpers
         $length = isset($val['length']) ? $val['length'] : $old[$key]['length'];
         $default = isset($val['default']) ? $val['default'] : $old[$key]['default'];
         $not_null = isset($val['not_null']) ? $val['not_null'] : $old[$key]['not_null'];
-
 
         $tmp = $old[$key]['type'];
         $left = isset(static::$mask[$tmp]) ? static::$mask[$tmp] : array_search($tmp, static::$mask);
@@ -55,7 +52,6 @@ class Helpers
         unset($table[$one]);
       }
     }
-
 
     $tmp =
     $out = array();

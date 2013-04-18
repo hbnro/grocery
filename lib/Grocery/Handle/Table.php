@@ -17,7 +17,7 @@ class Table extends Hasher
     if ($value === NULL) {
       unset($this[$key]);
     } elseif (is_string($value)) {
-      if ( ! $exists) {
+      if (! $exists) {
         throw new \Exception("Table '$key' does not exists");
       } elseif (strlen(trim($value)) === 0) {
         throw new \Exception("Cannot rename the table '$key' to '$value'");
@@ -57,9 +57,9 @@ class Table extends Hasher
     if ( ! method_exists($this, 'build_table')) {
       return $this->build_table($this->columns());
     }
+
     return $this->to_s();
   }
-
 
   public function serialize()
   {
@@ -80,7 +80,6 @@ class Table extends Hasher
     if ($type === 'reset') {
       $this->reset();
     }
-
 
     foreach ($tables as $one => $set) {
       if ($type === 'overwrite') {
@@ -103,6 +102,7 @@ class Table extends Hasher
     foreach ($this->tables() as $one) {
       $test[$one] = new \Grocery\Handle\Table($one, $this);
     }
+
     return new \ArrayIterator($test);
   }
 
@@ -110,7 +110,6 @@ class Table extends Hasher
   {
     return sizeof($this->tables());
   }
-
 
   public function to_json()
   {
@@ -127,6 +126,7 @@ class Table extends Hasher
         $out []= $this->build_index($one, $name, $set);
       }
     }
+
     return join(";\n", $out);
   }
 

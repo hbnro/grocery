@@ -10,7 +10,6 @@ class Dump extends Base
                     'limit' => '/\s+LIMIT\s+(\d+)(?:\s*(?:,|\s+TO\s+)\s*(\d+))?\s*$/i',
                   );
 
-
   protected function build_field($type, $length = 0, $default = NULL, $not_null = FALSE)
   {
     $tmp = static::$raw;
@@ -58,7 +57,6 @@ class Dump extends Base
   {
     $name = $this->quote_string($name);
     $sql  = "CREATE TABLE $name";
-
 
     if ($columns) {
       $sql .= "\n(\n";
@@ -168,7 +166,6 @@ class Dump extends Base
       $set = array($set);
     }
 
-
     foreach ($fields as $k => $v) {
       is_numeric($k) && $sub []= "$table.$v";
       is_numeric($k) OR $sub["$table.$k"] = $v;
@@ -231,7 +228,6 @@ class Dump extends Base
       $sql []= '(' . join(', ', $cols) . ')';
       $sql []= "\nVALUES\n(\n";
     }
-
 
     $out   = array();
     $count = 0;

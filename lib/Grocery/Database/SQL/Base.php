@@ -8,7 +8,6 @@ class Base extends \Grocery\Database\Forge
   protected $conn = NULL;
   protected $setup = array();
 
-
   public function __construct($driver, $params)
   {
     $this->conn = $driver;

@@ -7,7 +7,6 @@ class Record extends Hasher
 
   private $data = array();
 
-
   public function __construct($row)
   {
     $this->data = $row;
@@ -18,6 +17,7 @@ class Record extends Hasher
     if ( ! isset($this->$key)) {
       throw new \Exception("Unknown property '$key'");
     }
+
     return $this->data[$key];
   }
 
@@ -71,7 +71,6 @@ class Record extends Hasher
   {
     return sizeof($this->data);
   }
-
 
   public function to_json()
   {

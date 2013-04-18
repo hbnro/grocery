@@ -34,8 +34,6 @@ class SQLite extends \Grocery\Database\SQL\Scheme
                   'binary' => 'BLOB',
                 );
 
-
-
   public function rename($from, $to)
   {
     return $this->execute(sprintf('ALTER TABLE "%s" RENAME TO "%s"', $from, $to));
@@ -83,7 +81,6 @@ class SQLite extends \Grocery\Database\SQL\Scheme
         $val['default'],
       );
     }
-
 
     $this->begin();
 
@@ -195,6 +192,7 @@ class SQLite extends \Grocery\Database\SQL\Scheme
     } elseif ($test === NULL) {
       $test = 'NULL';
     }
+
     return $test;
   }
 
