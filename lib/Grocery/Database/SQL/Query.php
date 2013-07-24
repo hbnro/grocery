@@ -31,7 +31,10 @@ class Query extends Dump
       $sql = strtr($sql, $this->fixate_value($vars, TRUE));
     } else {
       $args = $this->fixate_value($vars, TRUE);
-      $sql  = preg_replace('/((?<!\\\)\?)/e', 'array_shift($args);', $sql);
+      $sql  = preg_replace_callback('/((?<!\\\)\?)/', function ()
+        use ($args) {
+          return array_shift($args);
+        }, $sql);
     }
 
     return $sql;
