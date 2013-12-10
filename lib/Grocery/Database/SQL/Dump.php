@@ -138,10 +138,7 @@ class Dump extends Base
   protected function build_delete($table, array $where = array(), $limit = 0, $primary_key = NULL)
   {
     $sql = "DELETE FROM\n" . $this->build_fields($table);
-
-    if ( ! empty($where)) {
-      $sql .= "\nWHERE\n" . $this->build_where($where);
-    }
+    $sql .= $where ? "\nWHERE\n" . $this->build_where($where) : '';
     $sql .= $limit > 0 ? "\nLIMIT $limit" : '';
 
     return $this->query_repare($sql, $primary_key);
@@ -151,7 +148,7 @@ class Dump extends Base
   {
     $sql  = "UPDATE\n" . $this->build_fields($table);
     $sql .= "\nSET\n" . $this->build_values($fields, FALSE);
-    $sql .= "\nWHERE\n" . $this->build_where($where);
+    $sql .= $where ? "\nWHERE\n" . $this->build_where($where) : '';
     $sql .= $limit > 0 ? "\nLIMIT {$limit}" : '';
 
     return $this->query_repare($sql, $primary_key);

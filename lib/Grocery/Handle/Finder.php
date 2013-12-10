@@ -91,8 +91,16 @@ class Finder extends Hasher
 
         switch ($method) {
           case 'all';
+          case 'pick';
+            $limit = array_shift($arguments) ?: 1;
 
-            return $this->select($params['select'] ?: '*', $params['where'], $params)->fetch_all();
+            if ($limit > 1) {
+              $params['limit'] = $limit;
+            }
+
+            $result = $this->select($params['select'] ?: '*', $params['where'], $params);
+
+            return $limit <> 1 ? $result->fetch_all() : $result->fetch();
           case 'each';
             @list($lambda) = $arguments;
 
