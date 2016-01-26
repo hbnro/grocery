@@ -1,13 +1,27 @@
 {
   "name": "habanero/grocery",
   "description": "Fancy database library for PHP",
-  "authors": [{
-    "name":"Alvaro Cabrera"
-  }],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Alvaro Cabrera",
+      "email": "pateketrueke@gmail.com"
+    }
+  ],
+  "version": "v0.0.0",
   "require": {
-    "php": ">=5.3"
+    "php": ">=5.3.4"
   },
+  "require-dev": {
+    "habanero/spectre": "~0.2.5"
+  },
+  "minimum-stability": "dev",
   "autoload": {
-    "psr-0": {"Grocery": "lib/"}
+    "psr-4": {
+      "": "lib"
+    }
+  },
+  "config": {
+    "bin-dir": "bin"
   }
 }
