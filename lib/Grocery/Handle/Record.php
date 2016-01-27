@@ -62,6 +62,10 @@ class Record extends Hasher
     $this->data = unserialize($data);
   }
 
+  public function jsonSerialize() {
+    return $this->data;
+  }
+
   public function getIterator()
   {
     return new \ArrayIterator($this->data);

@@ -2,7 +2,7 @@
 
 namespace Grocery\Handle;
 
-class Hasher extends Base implements \Countable, \Serializable, \ArrayAccess, \IteratorAggregate
+class Hasher extends Base implements \Countable, \Serializable, \ArrayAccess, \IteratorAggregate, \JsonSerializable
 {
 
   public function serialize()
@@ -13,6 +13,10 @@ class Hasher extends Base implements \Countable, \Serializable, \ArrayAccess, \I
   public function unserialize($data)
   {
     var_dump(unserialize($data));
+  }
+
+  public function jsonSerialize() {
+    return array();
   }
 
   public function offsetSet($offset, $value)
