@@ -16,14 +16,14 @@ class Helpers
     $old = $table->columns();
 
     foreach ($columns as $key => $val) {
+      is_array($val) OR $val = array($val);
+
+      if (!\Grocery\Helpers::is_assoc($val)) {
+        @list($type, $length, $default, $not_null) = $val;
+        $val = compact('type', 'length', 'default', 'not_null');
+      }
+
       if (isset($old[$key])) {
-        is_array($val) OR $val = array($val);
-
-        if (!\Grocery\Helpers::is_assoc($val)) {
-          @list($type, $length, $default, $not_null) = $val;
-          $val = compact('type', 'length', 'default', 'not_null');
-        }
-
         $type = isset($val['type']) ? $val['type'] : $old[$key]['type'];
         $length = isset($val['length']) ? $val['length'] : $old[$key]['length'];
         $default = isset($val['default']) ? $val['default'] : $old[$key]['default'];
@@ -33,7 +33,7 @@ class Helpers
         $left = isset(static::$mask[$tmp]) ? static::$mask[$tmp] : array_search($tmp, static::$mask);
         $right = isset(static::$mask[$type]) ? static::$mask[$type] : array_search($type, static::$mask);
 
-        if ($left && $right) {
+        if ($left === $right) {
           continue;
         }
 
