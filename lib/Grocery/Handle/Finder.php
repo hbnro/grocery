@@ -33,7 +33,7 @@ class Finder extends Hasher
 
   public function __get($key)
   {
-    if ( ! isset($this->$key)) {
+    if (!isset($this->$key)) {
       throw new \Exception("Field '$this'.'$key' does not exists");
     }
 
@@ -49,7 +49,7 @@ class Finder extends Hasher
     if ($value === NULL) {
       unset($this[$key]);
     } elseif (is_string($value)) {
-      if (! $exists) {
+      if (!$exists) {
         throw new \Exception("Field '$this'.'$key' does not exists");
       } elseif (strlen(trim($value)) === 0) {
         throw new \Exception("Cannot rename the field '$this'.'$key' to $value'");
@@ -76,7 +76,7 @@ class Finder extends Hasher
 
   public function __unset($key)
   {
-    if ( ! isset($this[$key])) {
+    if (!isset($this[$key])) {
       throw new \Exception("Field '$this'.'$key' does not exists");
     }
     $this->remove_column($key);
@@ -135,7 +135,7 @@ class Finder extends Hasher
       case 'index';
         @list($name, $unique) = $arguments;
 
-        return $this->add_index("{$this}_{$this->offset}_{$name}_idx", array($this->offset), !! $unique);
+        return $this->add_index("{$this}_{$this->offset}_{$name}_idx", array($this->offset), !!$unique);
       case 'unindex';
         @list($name) = $arguments;
 

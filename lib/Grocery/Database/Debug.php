@@ -19,7 +19,7 @@ class Debug
 
   public function last($key = FALSE)
   {
-    return ! empty($this->queries[$key]) ? end($this->queries[$key]) : FALSE;
+    return !empty($this->queries[$key]) ? end($this->queries[$key]) : FALSE;
   }
 
   public function start($sql)

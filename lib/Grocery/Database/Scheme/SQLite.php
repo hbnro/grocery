@@ -147,7 +147,7 @@ class SQLite extends \Grocery\Database\SQL\Scheme
 
       $out[$row['name']] = array(
           'type' => $row['pk'] > 0 ? 'PRIMARY_KEY' : $match[1],
-          'length' => ! empty($match[2]) ? (int) $match[2] : 0,
+          'length' => !empty($match[2]) ? (int) $match[2] : 0,
           'default' => trim($row['dflt_value'], "(')"),
           'not_null' => $row['notnull'] > 0,
       );
@@ -182,7 +182,7 @@ class SQLite extends \Grocery\Database\SQL\Scheme
 
   public function ensure_limit($test)
   {
-    return "\nLIMIT $test[1]" . ( ! empty($test[2]) ? ",$test[2]" : '');
+    return "\nLIMIT $test[1]" . (!empty($test[2]) ? ",$test[2]" : '');
   }
 
   public function ensure_type($test)

@@ -17,7 +17,7 @@ class Table extends Hasher
     if ($value === NULL) {
       unset($this[$key]);
     } elseif (is_string($value)) {
-      if (! $exists) {
+      if (!$exists) {
         throw new \Exception("Table '$key' does not exists");
       } elseif (strlen(trim($value)) === 0) {
         throw new \Exception("Cannot rename the table '$key' to '$value'");
@@ -30,7 +30,7 @@ class Table extends Hasher
         throw new \Exception("Table '$key' already exists");
       } elseif (sizeof($value) === 0) {
         throw new \Exception("Empty fields for '$key'");
-      } elseif ( ! \Grocery\Helpers::is_assoc($value)) {
+      } elseif (!\Grocery\Helpers::is_assoc($value)) {
         throw new \Exception("Invalid fields for '$key'");
       }
       $this->create($key, $value);
@@ -46,7 +46,7 @@ class Table extends Hasher
 
   public function __unset($key)
   {
-    if ( ! isset($this->$key)) {
+    if (!isset($this->$key)) {
       throw new \Exception("Table '$key' does not exists");
     }
     $this->drop($key);
@@ -54,7 +54,7 @@ class Table extends Hasher
 
   public function __toString()
   {
-    if ( ! method_exists($this, 'build_table')) {
+    if (!method_exists($this, 'build_table')) {
       return $this->build_table($this->columns());
     }
 
@@ -86,7 +86,7 @@ class Table extends Hasher
         $this->drop($one);
       }
 
-      if ( ! isset($this->$one)) {
+      if (!isset($this->$one)) {
         $this->create($one, $set['columns']);
 
         foreach ($set['indexes'] as $key => $val) {

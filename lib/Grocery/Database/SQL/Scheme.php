@@ -37,7 +37,7 @@ class Scheme extends Query
     $old  = include $from;
     $test = ob_get_clean();
 
-    if ( ! is_array($old)) {
+    if (!is_array($old)) {
       if ($raw) {
         return array_map(array($this, 'execute'), \Grocery\Helpers::sql_split($test));
       }
@@ -46,11 +46,11 @@ class Scheme extends Query
     }
 
     foreach ((array) $old as $key => $val) {
-      if ( ! empty($val['scheme'])) {
+      if (!empty($val['scheme'])) {
         $this->build_table($key, (array) $val['scheme']);
       }
 
-      if ( ! empty($val['data'])) {
+      if (!empty($val['data'])) {
         foreach ((array) $val['data'] as $one) {
           $this->insert($key, $one);
         }
@@ -83,7 +83,7 @@ class Scheme extends Query
       foreach ($out as $key => $val) {
         $old []= $this->build_table($key, $val['scheme']) . ';';
 
-        if ( ! empty($val['data'])) {
+        if (!empty($val['data'])) {
           foreach ((array) $val['data'] as $one) {
             $keys   = $this->build_fields($key);
             $values = $this->build_values($one, TRUE);
@@ -126,7 +126,7 @@ class Scheme extends Query
     $test = $this->fetch_columns($of);
 
     foreach ($test as $key => $val) {
-      $default     = ! empty(static::$types[$val['type']]) ? static::$types[$val['type']] : $val['type'];
+      $default     = !empty(static::$types[$val['type']]) ? static::$types[$val['type']] : $val['type'];
       $val['type'] = strtolower($default);
       $out[$key]  = $val;
     }

@@ -131,7 +131,7 @@ class MySQLi extends \Grocery\Database\SQL\Scheme
 
       $out[$row['Field']] = array(
           'type' => $row['Extra'] == 'auto_increment' ? 'PRIMARY_KEY' : $match[1],
-          'length' => ! empty($match[2]) ? (int) $match[2] : 0,
+          'length' => !empty($match[2]) ? (int) $match[2] : 0,
           'default' =>  $row['Default'],
           'not_null' => $row['Null'] <> 'YES',
       );
@@ -148,9 +148,9 @@ class MySQLi extends \Grocery\Database\SQL\Scheme
 
     while ($one = $this->fetch_assoc($res)) {
       if ($one['Key_name'] <> 'PRIMARY') {
-        if ( ! isset($out[$one['Key_name']])) {
+        if (!isset($out[$one['Key_name']])) {
           $out[$one['Key_name']] = array(
-            'unique' => ! $one['Non_unique'],
+            'unique' => !$one['Non_unique'],
             'column' => array(),
           );
         }
@@ -169,7 +169,7 @@ class MySQLi extends \Grocery\Database\SQL\Scheme
 
   public function ensure_limit($test)
   {
-    return "\nLIMIT $test[1]" . ( ! empty($test[2]) ? ",$test[2]\n" : "\n");
+    return "\nLIMIT $test[1]" . (!empty($test[2]) ? ",$test[2]\n" : "\n");
   }
 
   public function ensure_type($test)

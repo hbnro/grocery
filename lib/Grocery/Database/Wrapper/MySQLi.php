@@ -12,11 +12,11 @@ class MySQLi
   public static function factory(array $params, $debugger)
   {
     $host  = $params['host'];
-    $host .= ! empty($params['port']) ? ":$params[port]" : '';
+    $host .= !empty($params['port']) ? ":$params[port]" : '';
 
     $obj = new static;
     $obj->bm = $debugger;
-    $obj->res = mysqli_connect($host, $params['user'], ! empty($params['pass']) ? $params['pass'] : '');
+    $obj->res = mysqli_connect($host, $params['user'], !empty($params['pass']) ? $params['pass'] : '');
 
     mysqli_select_db($obj->res, trim($params['path'], '/'));
 

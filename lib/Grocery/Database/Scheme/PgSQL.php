@@ -173,7 +173,7 @@ class PgSQL extends \Grocery\Database\SQL\Scheme
       while ($one = $this->fetch_assoc($res)) {
         if (preg_match('/CREATE(\s+UNIQUE|)\s+INDEX\s+(\w+)\s+ON.+?\((.+?)\)/', $one['sql'], $match)) {
           $out[$match[2]] = array(
-            'unique' => ! empty($match[1]),
+            'unique' => !empty($match[1]),
             'column' => explode(',', preg_replace('/["\s]/', '', $match[3])),
           );
         }
@@ -192,7 +192,7 @@ class PgSQL extends \Grocery\Database\SQL\Scheme
 
   public function ensure_limit($test)
   {
-    return ! empty($test[2]) ? "\nLIMIT $test[2] OFFSET $test[1]" : "\nLIMIT $test[1]";
+    return !empty($test[2]) ? "\nLIMIT $test[2] OFFSET $test[1]" : "\nLIMIT $test[1]";
   }
 
   public function ensure_type($test)

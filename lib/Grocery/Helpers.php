@@ -19,7 +19,7 @@ class Helpers
       if (isset($old[$key])) {
         is_array($val) OR $val = array($val);
 
-        if ( ! \Grocery\Helpers::is_assoc($val)) {
+        if (!\Grocery\Helpers::is_assoc($val)) {
           @list($type, $length, $default, $not_null) = $val;
           $val = compact('type', 'length', 'default', 'not_null');
         }
@@ -119,7 +119,7 @@ class Helpers
           }
         break;
         case "'";
-          $str    = ! $str;
+          $str    = !$str;
           $query .= $char;
         break;
         default;
@@ -143,7 +143,7 @@ class Helpers
 
   public static function merge($as, array $are = array())
   {
-    if ( ! empty($are[0]) && static::is_assoc($are[0])) {
+    if (!empty($are[0]) && static::is_assoc($are[0])) {
       return $are[0];
     }
 

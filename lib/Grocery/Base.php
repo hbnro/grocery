@@ -28,9 +28,9 @@ class Base
 
   public static function connect($to)
   {
-    if ( ! preg_match(static::$regex, $to)) {
+    if (!preg_match(static::$regex, $to)) {
       throw new \Exception("Unable to determine connection scheme for '$to'");
-    } elseif ( ! isset(static::$multi[$to])) {
+    } elseif (!isset(static::$multi[$to])) {
       if (strrpos($to, ';')) {
         $params = array();
 
@@ -57,7 +57,7 @@ class Base
   {
     $params = array_merge(static::$defaults, $params);
 
-    if ( ! array_key_exists($params['scheme'], static::$available)) {
+    if (!array_key_exists($params['scheme'], static::$available)) {
       throw new \Exception("Scheme not available for '$params[scheme]'");
     }
 

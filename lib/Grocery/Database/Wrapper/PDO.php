@@ -86,7 +86,7 @@ class PDO
 
   public function count_rows($res)
   {
-    if (! $res) {
+    if (!$res) {
       return FALSE;
     }
 

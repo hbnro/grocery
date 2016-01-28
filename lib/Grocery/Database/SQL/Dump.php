@@ -17,7 +17,7 @@ class Dump extends Base
     if (empty($type)) {
       return FALSE;
     } else {
-      $test = is_string($type) && ! empty($tmp[$type]) ? $tmp[$type] : $type;
+      $test = is_string($type) && !empty($tmp[$type]) ? $tmp[$type] : $type;
     }
 
     if (\Grocery\Helpers::is_assoc($test)) {
@@ -33,7 +33,7 @@ class Dump extends Base
       return $test;
     }
 
-    if ( ! empty($tmp[$type])) {
+    if (!empty($tmp[$type])) {
       if (is_string($tmp[$type])) {
         return $tmp[$type];
       }
@@ -71,18 +71,18 @@ class Dump extends Base
 
   protected function build_select($table, $fields = '*', array $where = array(), array $options = array())
   {
-    if ( ! empty($options['join'])) {
+    if (!empty($options['join'])) {
       $sql = $this->build_joins($table, $fields, $options['join']);
     } else {
       $sql  = "SELECT\n" . $this->build_fields($fields);
       $sql .= "\nFROM\n" . $this->build_fields($table);
     }
 
-    if ( ! empty($where)) {
+    if (!empty($where)) {
       $sql .= "\nWHERE\n" . $this->build_where($where, 'AND', $table);
     }
 
-    if ( ! empty($options['group'])) {
+    if (!empty($options['group'])) {
       $sql .= "\nGROUP BY";
 
       if (is_array($options['group'])) {
@@ -97,7 +97,7 @@ class Dump extends Base
       }
     }
 
-    if ( ! empty($options['order'])) {
+    if (!empty($options['order'])) {
       $inc  = 0;
       $sql .= "\nORDER BY";
 
@@ -117,8 +117,8 @@ class Dump extends Base
       }
     }
 
-    $limit  = ! empty($options['limit']) ? $options['limit'] : 0;
-    $offset = ! empty($options['offset']) ? $options['offset'] : 0;
+    $limit  = !empty($options['limit']) ? $options['limit'] : 0;
+    $offset = !empty($options['offset']) ? $options['offset'] : 0;
 
     if ($limit > 0) {
       $sql .= "\nLIMIT " . ($offset > 0 ? "$offset, " : '') . $limit;
@@ -159,7 +159,7 @@ class Dump extends Base
     $sub =
     $out = array();
 
-    if ( ! isset($set[0])) {
+    if (!isset($set[0])) {
       $set = array($set);
     }
 
@@ -170,7 +170,7 @@ class Dump extends Base
 
     foreach ($set as $one) {
       // TODO: throw exception if no-defaults?
-      $name = ! empty($one['table']) ? $one['table'] : 'unknown';
+      $name = !empty($one['table']) ? $one['table'] : 'unknown';
 
       isset($one['select']) OR $one['select'] = '*';
 
@@ -179,8 +179,8 @@ class Dump extends Base
         is_numeric($key) OR $sub["$name.$key"] = $val;
       }
 
-      $use = ! empty($one['use']) ? strtoupper($one['use']) : 'LEFT';
-      $fk = $this->protect_names( ! empty($one['field']) ? $one['field'] : "{$name}_id");
+      $use = !empty($one['use']) ? strtoupper($one['use']) : 'LEFT';
+      $fk = $this->protect_names(!empty($one['field']) ? $one['field'] : "{$name}_id");
 
       $out []= "$use JOIN " . $this->protect_names($name) . ' ON';
       $out []= ' ' . $this->protect_names("$name.id") . ' = ' . $this->protect_names("$table.$fk");
@@ -262,7 +262,7 @@ class Dump extends Base
 
     foreach ($test as $key => $val) {
       if (is_numeric($key)) {
-        if ( ! \Grocery\Helpers::is_assoc($val)) {
+        if (!\Grocery\Helpers::is_assoc($val)) {
           $raw = array_shift($val);
           if ($val && strpos($raw, '?')) {
             $sql []= $this->prepare($raw, $val);
@@ -288,7 +288,7 @@ class Dump extends Base
           $sub = 'IS NULL';
         } else {
           $val = $this->fixate_value($val, TRUE);
-          $sub = ! empty($match[2]) ? ($match[2] == '!' ? '!=' : $match[2]) : '=';
+          $sub = !empty($match[2]) ? ($match[2] == '!' ? '!=' : $match[2]) : '=';
         }
 
         if (is_array($val) && (sizeof($val) > 1)) {

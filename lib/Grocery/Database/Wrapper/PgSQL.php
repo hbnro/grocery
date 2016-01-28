@@ -15,8 +15,8 @@ class PgSQL
 
     $conn  = "dbname=" . trim($params['path'], '/');
     $conn .= " host={$params['host']} user=$params[user]";
-    $conn .= ! empty($params['port'])? " port=$params[port]": '';
-    $conn .= ! empty($params['pass'])? " password=$params[pass]": '';
+    $conn .= !empty($params['port'])? " port=$params[port]": '';
+    $conn .= !empty($params['pass'])? " password=$params[pass]": '';
 
     $obj->bm = $debugger;
     $obj->res = pg_connect($conn);
