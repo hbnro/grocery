@@ -92,7 +92,7 @@ class Finder extends Hasher
         switch ($method) {
           case 'all';
           case 'pick';
-            $limit = array_shift($arguments) ?: 1;
+            $limit = array_shift($arguments) ?: ($method === 'all' ? 0 : 1);
 
             if ($limit > 1) {
               $params['limit'] = $limit;
