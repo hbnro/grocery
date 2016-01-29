@@ -1,10 +1,11 @@
 <?php
 
 return function(\Closure $lambda) {
-  $datasources = array(
+  $datasources = array_filter(array(
     'sqlite::memory:',
     'mysqli://root@localhost/grocery',
-  );
+    getenv('CI') ? 'pgsql://postgres@localhost/grocery' : ''
+  ));
 
   array_map(function($conn) use ($lambda) {
     try {

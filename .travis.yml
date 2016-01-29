@@ -1,6 +1,8 @@
 sudo: false
 language: php
-services: mysql
+services:
+  - mysql
+  - pgsql
 php:
   - 5.3
   - 5.4
@@ -11,6 +13,7 @@ env:
 install:
   - composer install --prefer-dist
 before_script:
+  - sh -c "psql -c 'create database grocery;' -U postgres"
   - sh -c "mysql -e 'create database IF NOT EXISTS grocery;' -uroot"
 script:
   - bin/spectre spec/**
