@@ -9,6 +9,8 @@ class PDO
 
   public static function factory(array $params, $debugger)
   {
+    $params['scheme'] = str_replace('mysqli', 'mysql', $params['scheme']);
+
     switch ($params['scheme']) {
       case 'sqlite';
         $dsn_string = 'sqlite:' . strtr($params['host'] . $params['path'], '\\', '/');
