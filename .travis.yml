@@ -1,7 +1,6 @@
 sudo: false
 language: php
-env:
-  - DB=mysql
+services: mysql
 php:
   - 5.3
   - 5.4
