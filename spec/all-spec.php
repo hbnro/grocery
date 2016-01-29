@@ -12,7 +12,7 @@ describe('Grocery', function () {
 
   $suitcase = function ($conn) {
     $db = \Grocery\Base::connect($conn);
-    $version = $db->version();
+    $version = json_encode($db->version());
 
     describe("Using $conn / $version", function () use ($db) {
       let('db', $db->reset());
