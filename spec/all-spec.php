@@ -3,7 +3,9 @@
 describe('Grocery', function () {
   $ds = require __DIR__.'/datasources.php';
   $ds(function ($db, $conn) {
-    describe("Using $conn", function () use ($db) {
+    $version = $db->version();
+
+    describe("Using $conn / $version", function () use ($db) {
       let('db', $db->reset());
 
       // describe('Base', function () {
