@@ -3,7 +3,7 @@
 return function(\Closure $lambda) {
   $datasources = array(
     'sqlite::memory:',
-    'mysqli://' . (getenv('CI') ? 'travis' : 'root') . '@localhost/grocery',
+    'mysqli://root@localhost/grocery',
   );
 
   array_map(function($conn) use ($lambda) {

@@ -11,6 +11,6 @@ env:
 install:
   - composer install --prefer-dist
 before_script:
-  - sh -c "mysql -e 'create database IF NOT EXISTS grocery;'"
+  - sh -c "mysql -e 'create database IF NOT EXISTS grocery;' -uroot"
 script:
   - bin/spectre spec/**
