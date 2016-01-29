@@ -1,8 +1,7 @@
 sudo: false
-#cache:
-#  directories:
-#  - $PWD/vendor
 language: php
+env:
+  - DB=mysql
 php:
   - 5.3
   - 5.4
@@ -12,5 +11,7 @@ env:
   - COMPOSER_ROOT_VERSION=dev-master
 install:
   - composer install --prefer-dist
+before_script:
+  - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'create database IF NOT EXISTS grocery;'; fi"
 script:
   - bin/spectre spec/**
