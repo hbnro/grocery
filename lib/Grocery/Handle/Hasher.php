@@ -2,21 +2,72 @@
 
 namespace Grocery\Handle;
 
-class Hasher extends Base implements \Countable, \Serializable, \ArrayAccess, \IteratorAggregate, \JsonSerializable
+class Hasher implements \Countable, \Serializable, \ArrayAccess, \IteratorAggregate, \JsonSerializable
 {
+
+  private $value = NULL;
+  private $wrapper = NULL;
+
+  public function __construct($test, $instance)
+  {
+    $this->value = $test;
+    $this->wrapper = $instance;
+  }
+
+  public function __call($method, $arguments)
+  {
+    array_unshift($arguments, $this->value);
+
+    return call_user_func_array(array($this->wrapper, $method), $arguments);
+  }
+
+  public function __get($key)
+  {
+    if (!isset($this->$key)) {
+      throw new \Exception("Unknown property '$key'");
+    }
+
+    return $this->value[$key];
+  }
+
+  public function __set($key, $value)
+  {
+    if (!isset($this->$key)) {
+      throw new \Exception("Unknown property '$key'");
+    }
+    $this->value[$key] = $value;
+  }
+
+  public function __isset($key)
+  {
+    return array_key_exists($key, $this->value);
+  }
+
+  public function __unset($key)
+  {
+    if (!isset($this->$key)) {
+      throw new \Exception("Unknown property '$key'");
+    }
+    unset($this->value[$key]);
+  }
+
+  public function __toString()
+  {
+    return print_r($this->value, TRUE);
+  }
 
   public function serialize()
   {
-    return serialize(array());
+    return serialize($this->value);
   }
 
   public function unserialize($data)
   {
-    var_dump(unserialize($data));
+    $this->value = unserialize($data);
   }
 
   public function jsonSerialize() {
-    return array();
+    return json_encode($this->value);
   }
 
   public function offsetSet($offset, $value)
@@ -41,12 +92,27 @@ class Hasher extends Base implements \Countable, \Serializable, \ArrayAccess, \I
 
   public function getIterator()
   {
-    return new \ArrayIterator(array());
+    return new \ArrayIterator($this->value);
   }
 
   public function count()
   {
-    return -1;
+    return sizeof($this->value);
+  }
+
+  public function to_json()
+  {
+    return $this->jsonSerialize();
+  }
+
+  public function to_s()
+  {
+    return (string) $this;
+  }
+
+  public function to_a()
+  {
+    return $this->value;
   }
 
 }

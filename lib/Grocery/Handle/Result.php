@@ -2,6 +2,6 @@
 
 namespace Grocery\Handle;
 
-class Result extends Base
+class Result extends Hasher
 {
 }
