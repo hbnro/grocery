@@ -70,7 +70,7 @@ class Base
     $debugger = new \Grocery\Database\Debug(\Grocery\Config::get('logger'));
     $wrapper = $driver_klass::factory($params, $debugger);
 
-    if ($raw OR method_exists($driver_klass, 'select')) {
+    if ($raw) {
       return $wrapper;
     }
 
