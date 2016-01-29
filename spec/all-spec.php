@@ -1,8 +1,17 @@
 <?php
 
 describe('Grocery', function () {
-  $ds = require __DIR__.'/datasources.php';
-  $ds(function ($db, $conn) {
+  $datasources = array_filter(array(
+    'sqlite::memory:',
+    'sqlite::memory:#pdo',
+    'mysql://root@localhost/grocery',
+    'mysql://root@localhost/grocery#pdo',
+    (getenv('CI') && !defined('HHVM_VERSION')) ? 'pgsql://postgres@localhost/grocery' : '',
+    (getenv('CI') && !defined('HHVM_VERSION')) ? 'pgsql://postgres@localhost/grocery#pdo' : '',
+  ));
+
+  $suitcase = function ($conn) {
+    $db = \Grocery\Base::connect($conn);
     $version = $db->version();
 
     describe("Using $conn / $version", function () use ($db) {
@@ -139,5 +148,7 @@ describe('Grocery', function () {
         });
       });
     });
-  });
+  };
+
+  array_map($suitcase, $datasources);
 });
