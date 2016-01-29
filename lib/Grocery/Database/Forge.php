@@ -20,6 +20,8 @@ class Forge extends \Grocery\Handle\Table
     foreach ($this->tables() as $one) {
       $this->drop($one);
     }
+
+    return $this;
   }
 
 }
