@@ -129,8 +129,8 @@ describe('Grocery', function () {
               expect($test['a_x___idx']['unique'])->toBeFalsy();
             });
 
-            it('should set indexes as unique when passing TRUE', function ($a) {
-              \Grocery\Helpers::hydrate($a, array('x' => 'integer', 'y' => 'integer'), array('x', 'y' => TRUE));
+            it('should set indexes as unique when passing true', function ($a) {
+              \Grocery\Helpers::hydrate($a, array('x' => 'integer', 'y' => 'integer'), array('x', 'y' => true));
 
               $test = $a->indexes();
 
@@ -138,7 +138,7 @@ describe('Grocery', function () {
             });
 
             it('should remove indexes when they are missing', function ($a) {
-              \Grocery\Helpers::hydrate($a, array('x' => 'integer', 'y' => 'integer'), array('y' => FALSE));
+              \Grocery\Helpers::hydrate($a, array('x' => 'integer', 'y' => 'integer'), array('y' => false));
 
               $test = $a->indexes();
 
