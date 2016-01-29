@@ -4,8 +4,8 @@ return function(\Closure $lambda) {
   $datasources = array_filter(array(
     'sqlite::memory:',
     'sqlite::memory:#pdo',
-    'mysqli://root@localhost/grocery',
-    'mysqli://root@localhost/grocery#pdo',
+    'mysql://root@localhost/grocery',
+    'mysql://root@localhost/grocery#pdo',
     (getenv('CI') && !defined('HHVM_VERSION')) ? 'pgsql://postgres@localhost/grocery' : '',
     (getenv('CI') && !defined('HHVM_VERSION')) ? 'pgsql://postgres@localhost/grocery#pdo' : '',
   ));

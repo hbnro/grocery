@@ -22,7 +22,7 @@ class Base
   public static $available = array(
                     // back to basics
                     'pgsql' => '\\Grocery\\Database\\@\\PgSQL',
-                    'mysqli' => '\\Grocery\\Database\\@\\MySQLi',
+                    'mysql' => '\\Grocery\\Database\\@\\MySQL',
                     'sqlite' => '\\Grocery\\Database\\@\\SQLite',
                   );
 

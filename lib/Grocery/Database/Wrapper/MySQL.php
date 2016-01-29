@@ -2,7 +2,7 @@
 
 namespace Grocery\Database\Wrapper;
 
-class MySQLi
+class MySQL
 {
 
   private $bm = NULL;

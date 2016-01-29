@@ -2,7 +2,7 @@
 
 namespace Grocery\Database\Scheme;
 
-class MySQLi extends \Grocery\Database\SQL\Scheme
+class MySQL extends \Grocery\Database\SQL\Scheme
 {
 
   public static $random = 'RAND()';
@@ -106,7 +106,7 @@ class MySQLi extends \Grocery\Database\SQL\Scheme
 
   public function set_encoding()
   {
-    return $this->execute("SET NAMES UTF8");
+    return $this->execute('SET NAMES UTF8');
   }
 
   public function fetch_tables()
