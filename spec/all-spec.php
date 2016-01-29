@@ -94,8 +94,10 @@ describe('Grocery', function () {
             });
 
             it('should maintain consistency', function ($a) {
-              expect($a->all()[0]->x)->toEqual(123);
-              expect($a->all()[1]->x)->toEqual(456);
+              $test = $a->all();
+
+              expect($test[0]->x)->toEqual(123);
+              expect($test[1]->x)->toEqual(456);
             });
 
             it('should add columns on extra fields', function ($a) {
@@ -110,17 +112,26 @@ describe('Grocery', function () {
           describe('indexes', function() {
             it('should add indexes when they are provided', function ($a) {
               \Grocery\Helpers::hydrate($a, array('x' => 'integer', 'y' => 'integer'), array('x'));
-              expect($a->indexes()['a_x___idx']['unique'])->toBeFalsy();
+
+              $test = $a->indexes();
+
+              expect($test['a_x___idx']['unique'])->toBeFalsy();
             });
 
             it('should set indexes as unique when passing TRUE', function ($a) {
               \Grocery\Helpers::hydrate($a, array('x' => 'integer', 'y' => 'integer'), array('x', 'y' => TRUE));
-              expect($a->indexes()['a_y___idx']['unique'])->toBeTruthy();
+
+              $test = $a->indexes();
+
+              expect($test['a_y___idx']['unique'])->toBeTruthy();
             });
 
             it('should remove indexes when they are missing', function ($a) {
               \Grocery\Helpers::hydrate($a, array('x' => 'integer', 'y' => 'integer'), array('y' => FALSE));
-              expect($a->indexes())->toHaveLength(1);
+
+              $test = $a->indexes();
+
+              expect($test)->toHaveLength(1);
             });
           });
         });
