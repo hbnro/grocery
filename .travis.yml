@@ -1,8 +1,5 @@
 sudo: false
 language: php
-cache:
-  directories:
-  - $PWD/vendor
 php:
   - 5.3
   - 5.4
