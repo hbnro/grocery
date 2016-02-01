@@ -13,7 +13,7 @@
     "php": ">=5.3.4"
   },
   "require-dev": {
-    "habanero/spectre": "~0.2.5"
+    "habanero/spectre": "~0.3.0"
   },
   "minimum-stability": "dev",
   "autoload": {
