@@ -1,8 +1,8 @@
 sudo: false
 language: php
-services:
-  - mysql
-  - pgsql
+cache:
+  directories:
+  - $PWD/vendor
 php:
   - 5.3
   - 5.4
@@ -10,12 +10,15 @@ php:
   - 5.6
   - 7
   - hhvm
-env:
-  - COMPOSER_ROOT_VERSION=dev-master
+services:
+  - mysql
+  - pgsql
 install:
-  - composer install --prefer-dist
+  - COMPOSER_ROOT_VERSION=dev-master composer update --prefer-dist
 before_script:
   - sh -c "psql -c 'create database grocery;' -U postgres"
   - sh -c "mysql -e 'create database IF NOT EXISTS grocery;' -uroot"
 script:
-  - bin/spectre spec/**
+  - bin/spectre spec
+notifications:
+  email: false
