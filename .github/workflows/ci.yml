@@ -33,6 +33,6 @@ jobs:
       - name: Install dependencies
         uses: php-actions/composer@master
         with:
-          php_version: 8.0
+          php_version: 8.0.11
 
       - run: ANSICON=true TERM_SIZE="80 25" bin/spectre spec
