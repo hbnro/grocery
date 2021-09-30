@@ -31,7 +31,7 @@ class MySQL extends \Grocery\Database\SQL\Scheme
                 );
 
   public static $raw = array(
-                  'primary_key' => 'INT(11) DEFAULT NULL auto_increment PRIMARY KEY',
+                  'primary_key' => 'INT(11) auto_increment PRIMARY KEY',
                   'string' => array('type' => 'VARCHAR', 'length' => 255),
                   'integer' => array('type' => 'INT', 'length' => 11),
                   'timestamp' => 'DATETIME',
