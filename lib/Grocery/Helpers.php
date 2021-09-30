@@ -109,7 +109,7 @@ class Helpers
             $query .= $char;
           } else {
             if (strlen(trim($query)) == 0) {
-              continue 1;
+              continue 2;
             }
 
             $query = str_replace($exep, "\\'", $query);
