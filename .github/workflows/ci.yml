@@ -35,4 +35,4 @@ jobs:
         with:
           php_version: 8.0
 
-      - run: bin/spectre spec
+      - run: ANSICON=true TERM_SIZE="80 25" bin/spectre spec
