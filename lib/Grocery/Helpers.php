@@ -34,7 +34,7 @@ class Helpers
         $right = isset(static::$mask[$type]) ? static::$mask[$type] : array_search($type, static::$mask);
 
         if ($left === $right) {
-          continue;
+          continue 1;
         }
 
         $tmp = compact('type', 'length', 'default', 'not_null');

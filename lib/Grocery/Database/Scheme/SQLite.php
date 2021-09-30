@@ -72,7 +72,7 @@ class SQLite extends \Grocery\Database\SQL\Scheme
     foreach ($this->columns($from) as $key => $val) {
       if ($key === $name) {
         $to && $new[$key] = (array) $to;
-        continue;
+        continue 1;
       }
 
       $new[$key] = array(

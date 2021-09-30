@@ -109,7 +109,7 @@ class Dump extends Base
         if (is_numeric($one)) {
           $sql .= "\n ";
           $sql .= $set == 'random' ? static::$random : $this->protect_names("$table.$set[0]") . " $set[1]";
-          continue;
+          continue 1;
         }
 
         $one  = $this->protect_names("$table.$one");
@@ -198,10 +198,10 @@ class Dump extends Base
 
     foreach ((array) $values as $key => $val) {
       if (strlen(trim($val)) == 0) {
-        continue;
+        continue 1;
       } elseif (is_numeric($key)) {
         $sql []= ' ' . $this->protect_names($val);
-        continue;
+        continue 1;
       }
 
       $sql []= ' ' . $this->protect_names($key) . ' AS ' . $this->quote_string($val);
