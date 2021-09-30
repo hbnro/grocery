@@ -1,48 +1,49 @@
 The main purpose
 ================
 
-[![CI](https://github.com/hbnro/grocery/actions/workflows/ci.yml/badge.svg)](https://github.com/hbnro/grocery/actions)
-
 Provide a simple (and fancy) interface to work with databases, currently supports
 PostgreSQL (8.4+), MySQLi (5.1+) and SQLite3 (3.7+) using the same API.
 
 Perform migrations quickly, although you must write a wrapper for this
 if you want to keep the track.
 
+[![CI](https://github.com/hbnro/grocery/actions/workflows/ci.yml/badge.svg)](https://github.com/hbnro/grocery/actions)
 
 ## First steps
 
 You can just load tables and work with them almost easily, or you could create
 tables directly from the code and skip the CLI or GUI to achieve that.
 
-    <?php
+```php
+<?php
 
-    # configure the DSN
-    $dsn = 'pgsql://postgres:test@localhost:5432/test#pdo';
+# configure the DSN
+$dsn = 'pgsql://postgres:test@localhost:5432/test#pdo';
 
-    # create a connection
-    $db = Grocery\Base::connect($dsn);
+# create a connection
+$db = Grocery\Base::connect($dsn);
 
-    # load existing table
-    $foo = $db['my_table'];
+# load existing table
+$foo = $db['my_table'];
 
-    # pick one row randomly
-    $bar = $foo->select('*', array(/* where */), array(
-      'order' => array('random'),
-    ));
+# pick one row randomly
+$bar = $foo->select('*', array(/* where */), array(
+  'order' => array('random'),
+));
 
-    # create another table
-    $db['other_table'] = array(
-      'id' => 'primary_key',
-      'title' => 'string',
-      'published_at' => 'timestamp',
-    );
+# create another table
+$db['other_table'] = array(
+  'id' => 'primary_key',
+  'title' => 'string',
+  'published_at' => 'timestamp',
+);
 
-    # inserting a new row
-    $db->other_table->insert(array(
-      'title' => 'Hello World!',
-      'published_at' => date('Y-m-d H:i:s'),
-    ));
+# inserting a new row
+$db->other_table->insert(array(
+  'title' => 'Hello World!',
+  'published_at' => date('Y-m-d H:i:s'),
+));
+```
 
 There are generic types for creating new tables.
 
@@ -64,22 +65,25 @@ There are generic types for creating new tables.
 
 Grocery provides the `hydrate()` helper method for this purpose.
 
-    # table fields
-    $foo = array(
-      'id' => 'primary_key',
-      'bar' => 'string',
-      'candy' => 'timestamp',
-    );
+```php
+<?php
 
-    # indexed fields
-    $bar = array('bar', 'candy' => TRUE);
+# table fields
+$foo = array(
+  'id' => 'primary_key',
+  'bar' => 'string',
+  'candy' => 'timestamp',
+);
 
-    # create if not exists
-    isset($db['tbl']) OR $db['tbl'] = $foo;
+# indexed fields
+$bar = array('bar', 'candy' => TRUE);
 
-    # performs the hydration
-    Grocery\Helpers::hydrate($db['tbl'], $foo, $bar);
-    
+# create if not exists
+isset($db['tbl']) OR $db['tbl'] = $foo;
+
+# performs the hydration
+Grocery\Helpers::hydrate($db['tbl'], $foo, $bar);
+```
 
 Internally it will load the current details from the specified table,
 then compare and update your table definitions against your provided changes.
@@ -91,11 +95,13 @@ Notice that some operations are restrictive depending on the driver limitations.
 
 Using the composer is the best way to get installed Grocery as dependency.
 
-    {
-      "require": {
-        "habanero/grocery": "dev-master"
-      }
-    }
+```json
+{
+  "require": {
+    "habanero/grocery": "dev-master"
+  }
+}
+```
 
 Then include the `vendor/autoload.php` script at the top of your project _et voila_.
 
