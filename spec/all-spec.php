@@ -4,10 +4,10 @@ describe('Grocery', function () {
   $datasources = array_filter(array(
     'sqlite::memory:',
     'sqlite::memory:#pdo',
-    'mysql://root@localhost/grocery',
-    'mysql://root@localhost/grocery#pdo',
-    (getenv('CI') && !defined('HHVM_VERSION')) ? 'pgsql://postgres@localhost/grocery' : '',
-    (getenv('CI') && !defined('HHVM_VERSION')) ? 'pgsql://postgres@localhost/grocery#pdo' : '',
+    getenv('CI') ? 'mysql://mysql:mysql@localhost:33306/ci_db_test' : '',
+    getenv('CI') ? 'mysql://mysql:mysql@localhost:33306/ci_db_test#pdo' : '',
+    (getenv('CI') && !defined('HHVM_VERSION')) ? 'pgsql://postgres:postgres@localhost/ci_db_test' : '',
+    (getenv('CI') && !defined('HHVM_VERSION')) ? 'pgsql://postgres:postgres@localhost/ci_db_test#pdo' : '',
   ));
 
   $suitcase = function ($conn) {
