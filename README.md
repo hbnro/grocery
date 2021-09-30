@@ -1,6 +1,8 @@
 The main purpose
 ================
 
+[![CI](https://github.com/hbnro/grocery/actions/workflows/ci.yml/badge.svg)](https://github.com/hbnro/grocery/actions)
+
 Provide a simple (and fancy) interface to work with databases, currently supports
 PostgreSQL (8.4+), MySQLi (5.1+) and SQLite3 (3.7+) using the same API.
 
