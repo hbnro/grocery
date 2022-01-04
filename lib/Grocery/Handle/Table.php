@@ -96,7 +96,7 @@ class Table extends Hasher
     }
   }
 
-  public function getIterator()
+  public function getIterator(): \Traversable
   {
     $test = array();
     foreach ($this->tables() as $one) {
@@ -106,7 +106,7 @@ class Table extends Hasher
     return new \ArrayIterator($test);
   }
 
-  public function count()
+  public function count(): int
   {
     return sizeof($this->tables());
   }

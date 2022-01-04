@@ -2,7 +2,7 @@
 
 namespace Grocery\Handle;
 
-class Hasher implements \Countable, \Serializable, \ArrayAccess, \IteratorAggregate, \JsonSerializable
+class Hasher implements \Countable, \ArrayAccess, \IteratorAggregate, \JsonSerializable
 {
 
   private $value = NULL;
@@ -56,46 +56,47 @@ class Hasher implements \Countable, \Serializable, \ArrayAccess, \IteratorAggreg
     return print_r($this->value, TRUE);
   }
 
-  public function serialize()
+  public function __serialize()
   {
     return serialize($this->value);
   }
 
-  public function unserialize($data)
+  public function __unserialize($data)
   {
     $this->value = unserialize($data);
   }
 
-  public function jsonSerialize() {
+  public function jsonSerialize(): mixed
+  {
     return json_encode($this->value);
   }
 
-  public function offsetSet($offset, $value)
+  public function offsetSet($offset, $value): void
   {
     $this->$offset = $value;
   }
 
-  public function offsetExists($offset)
+  public function offsetExists($offset): bool
   {
     return isset($this->$offset);
   }
 
-  public function offsetUnset($offset)
+  public function offsetUnset($offset): void
   {
     unset($this->$offset);
   }
 
-  public function offsetGet($offset)
+  public function offsetGet($offset): mixed
   {
     return $this->$offset;
   }
 
-  public function getIterator()
+  public function getIterator(): \Traversable
   {
     return new \ArrayIterator($this->value);
   }
 
-  public function count()
+  public function count(): int
   {
     return sizeof($this->value);
   }

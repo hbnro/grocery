@@ -146,12 +146,12 @@ class Finder extends Hasher
     }
   }
 
-  public function getIterator()
+  public function getIterator(): \Traversable
   {
     return new \ArrayIterator($this->all());
   }
 
-  public function count()
+  public function count(): int
   {
     return $this->__call('count', array());
   }
