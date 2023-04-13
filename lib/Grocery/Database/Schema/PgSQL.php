@@ -1,8 +1,8 @@
 <?php
 
-namespace Grocery\Database\Scheme;
+namespace Grocery\Database\Schema;
 
-class PgSQL extends \Grocery\Database\SQL\Scheme
+class PgSQL extends \Grocery\Database\SQL\Schema
 {
 
   public static $random = 'RANDOM()';

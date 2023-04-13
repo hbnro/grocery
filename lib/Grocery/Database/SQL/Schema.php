@@ -2,7 +2,7 @@
 
 namespace Grocery\Database\SQL;
 
-class Scheme extends Query
+class Schema extends Query
 {
 
   public function begin()

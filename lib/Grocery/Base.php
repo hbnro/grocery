@@ -65,7 +65,7 @@ class Base
 
     $base_klass = static::$available[$params['scheme']];
     $driver_klass = $pdo ? '\\Grocery\\Database\\Wrapper\\PDO' : str_replace('@', 'Wrapper', $base_klass);
-    $scheme_klass = str_replace('@', 'Scheme', $base_klass);
+    $scheme_klass = str_replace('@', 'Schema', $base_klass);
 
     $debugger = new \Grocery\Database\Debug(\Grocery\Config::get('logger'));
     $wrapper = $driver_klass::factory($params, $debugger);

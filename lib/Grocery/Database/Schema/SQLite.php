@@ -1,8 +1,8 @@
 <?php
 
-namespace Grocery\Database\Scheme;
+namespace Grocery\Database\Schema;
 
-class SQLite extends \Grocery\Database\SQL\Scheme
+class SQLite extends \Grocery\Database\SQL\Schema
 {
 
   public static $random = 'RANDOM()';
