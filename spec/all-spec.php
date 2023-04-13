@@ -1,14 +1,14 @@
 <?php
 
 describe('Grocery', function () {
-  $datasources = array_filter(array(
+  $datasources = array_filter([
     'sqlite::memory:',
     'sqlite::memory:#pdo',
     getenv('CI') ? 'mysql://mysql:mysql@localhost:33306/ci_db_test' : '',
     getenv('CI') ? 'mysql://mysql:mysql@localhost:33306/ci_db_test#pdo' : '',
     (getenv('CI') && !defined('HHVM_VERSION')) ? 'pgsql://postgres:postgres@localhost/ci_db_test' : '',
     (getenv('CI') && !defined('HHVM_VERSION')) ? 'pgsql://postgres:postgres@localhost/ci_db_test#pdo' : '',
-  ));
+  ]);
 
   $suitcase = function ($conn) {
     $db = \Grocery\Base::connect($conn);
@@ -82,10 +82,10 @@ describe('Grocery', function () {
       describe('Helpers', function () {
         describe('hydrate()', function () {
           before(function ($db) {
-            $db->reset()->create('a', array('id' => 'primary_key', 'x' => 'integer'));
+            $db->reset()->create('a', ['id' => 'primary_key', 'x' => 'integer']);
 
-            $db->a->insert(array('x' => 123));
-            $db->a->insert(array('x' => 456));
+            $db->a->insert(['x' => 123]);
+            $db->a->insert(['x' => 456]);
 
             let('a', $db->a);
           });
@@ -97,7 +97,7 @@ describe('Grocery', function () {
 
           describe('columns', function () {
             it('should be able to migrate', function ($a) {
-              \Grocery\Helpers::hydrate($a, array('x' => 'string'));
+              \Grocery\Helpers::hydrate($a, ['x' => 'string']);
 
               $b = $a->columns();
 
@@ -112,17 +112,17 @@ describe('Grocery', function () {
             });
 
             it('should add columns on extra fields', function ($a) {
-              \Grocery\Helpers::hydrate($a, array('x' => 'integer', 'y' => 'integer'));
+              \Grocery\Helpers::hydrate($a, ['x' => 'integer', 'y' => 'integer']);
             });
 
             it('should remove columns on missing fields', function ($a) {
-              \Grocery\Helpers::hydrate($a, array('x' => 'integer'));
+              \Grocery\Helpers::hydrate($a, ['x' => 'integer']);
             });
           });
 
           describe('indexes', function() {
             it('should add indexes when they are provided', function ($a) {
-              \Grocery\Helpers::hydrate($a, array('x' => 'integer', 'y' => 'integer'), array('x'));
+              \Grocery\Helpers::hydrate($a, ['x' => 'integer', 'y' => 'integer'], ['x']);
 
               $test = $a->indexes();
 
@@ -130,7 +130,7 @@ describe('Grocery', function () {
             });
 
             it('should set indexes as unique when passing true', function ($a) {
-              \Grocery\Helpers::hydrate($a, array('x' => 'integer', 'y' => 'integer'), array('x', 'y' => true));
+              \Grocery\Helpers::hydrate($a, ['x' => 'integer', 'y' => 'integer'], ['x', 'y' => true]);
 
               $test = $a->indexes();
 
@@ -138,7 +138,7 @@ describe('Grocery', function () {
             });
 
             it('should remove indexes when they are missing', function ($a) {
-              \Grocery\Helpers::hydrate($a, array('x' => 'integer', 'y' => 'integer'), array('y' => false));
+              \Grocery\Helpers::hydrate($a, ['x' => 'integer', 'y' => 'integer'], ['y' => false]);
 
               $test = $a->indexes();
 
