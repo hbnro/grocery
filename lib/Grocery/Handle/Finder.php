@@ -20,8 +20,10 @@ class Finder extends Hasher
                   );
 
   private static $retrieve = array(
+                    'get',
                     'all',
                     'pick',
+                    'first',
                     'each',
                     'count',
                   );
@@ -91,7 +93,9 @@ class Finder extends Hasher
 
         switch ($method) {
           case 'all';
+          case 'get';
           case 'pick';
+          case 'first';
             $limit = array_shift($arguments) ?: ($method === 'all' ? 0 : 1);
 
             if ($limit > 1) {
