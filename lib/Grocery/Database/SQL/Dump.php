@@ -114,7 +114,7 @@ class Dump extends Base
         }
 
         $one  = $this->protect_names("$table.$one");
-        $sql .= "\n $one " . strtoupper($set);
+        $sql .= "\n $one " . (is_numeric($set) ? ($set > 0 ? 'ASC' : 'DESC') : strtoupper($set));
       }
     }
 
