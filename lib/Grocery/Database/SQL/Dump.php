@@ -107,8 +107,9 @@ class Dump extends Base
         }
 
         if (is_numeric($one)) {
+          $order = strtoupper($set[1]);
           $sql .= "\n ";
-          $sql .= $set == 'random' ? static::$random : $this->protect_names("$table.$set[0]") . " $set[1]";
+          $sql .= $set == 'random' ? static::$random : $this->protect_names("$table.$set[0]") . " $order";
           continue 1;
         }
 
