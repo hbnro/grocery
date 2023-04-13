@@ -27,22 +27,22 @@ $db = Grocery\Base::connect($dsn);
 $foo = $db['my_table'];
 
 # pick one row randomly
-$bar = $foo->select('*', array(/* where */), array(
+$bar = $foo->select('*', [/* where */], [
   'order' => array('random'),
-));
+]);
 
 # create another table
-$db['other_table'] = array(
+$db['other_table'] = [
   'id' => 'primary_key',
   'title' => 'string',
   'published_at' => 'timestamp',
-);
+];
 
 # inserting a new row
-$db->other_table->insert(array(
+$db->other_table->insert([
   'title' => 'Hello World!',
   'published_at' => date('Y-m-d H:i:s'),
-));
+]);
 ```
 
 There are generic types for creating new tables.
@@ -60,7 +60,6 @@ There are generic types for creating new tables.
  - **date**: Just the date part `Y-m-d`
  - **time**: The time part `H:i:s`
 
-
 ## About migrating
 
 Grocery provides the `hydrate()` helper method for this purpose.
@@ -69,17 +68,17 @@ Grocery provides the `hydrate()` helper method for this purpose.
 <?php
 
 # table fields
-$foo = array(
+$foo = [
   'id' => 'primary_key',
   'bar' => 'string',
   'candy' => 'timestamp',
-);
+];
 
 # indexed fields
-$bar = array('bar', 'candy' => TRUE);
+$bar = ['bar', 'candy' => TRUE];
 
 # create if not exists
-isset($db['tbl']) OR $db['tbl'] = $foo;
+isset($db['tbl']) || $db['tbl'] = $foo;
 
 # performs the hydration
 Grocery\Helpers::hydrate($db['tbl'], $foo, $bar);
@@ -90,6 +89,20 @@ then compare and update your table definitions against your provided changes.
 
 Notice that some operations are restrictive depending on the driver limitations.
 
+## Basic usage
+
+Table access is granted through the `$db[...]` syntax, most operations can be chained.
+
+> The last call MUST be a getter, e.g. `first()`, `pick()`, `get()` or `all()`.
+
+```php
+$tbl = $db['tbl'];
+$tbl->where(['status' => 0])->count();
+$tbl->where(['status' => -1])->delete();
+$tbl->select('*')->where(['status' => 1])->all();
+$tbl->order(['created_at' => 1])->where(['status' => 2])->select('*')->first();
+$tbl->where(['id' => 42])->update(['value' => 'OSOM']);
+```
 
 ## Installation
 
