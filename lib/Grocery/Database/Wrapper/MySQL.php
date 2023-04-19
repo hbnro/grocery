@@ -2,6 +2,7 @@
 
 namespace Grocery\Database\Wrapper;
 
+#[AllowDynamicProperties]
 class MySQL
 {
 
