@@ -26,12 +26,12 @@ class Hasher implements \Countable, \ArrayAccess, \IteratorAggregate, \JsonSeria
 
     if ($method === 'update') {
         $arguments[0] = $this->settings['table'];
-        $arguments[2] = array_merge($this->settings['where'], !empty($arguments[2]) ? $arguments[2] : []);
+        $arguments[2] = !empty($arguments[2]) ? $arguments[2] : $this->settings['where'];
     }
 
     if ($method === 'delete') {
         $arguments[0] = $this->settings['table'];
-        $arguments[1] = array_merge($this->settings['where'], !empty($arguments[1]) ? $arguments[1] : []);
+        $arguments[1] = !empty($arguments[1]) ? $arguments[1] : $this->settings['where'];
     }
 
     return call_user_func_array(array($this->wrapper, $method), $arguments);
