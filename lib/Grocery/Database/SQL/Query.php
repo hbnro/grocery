@@ -54,7 +54,7 @@ class Query extends Dump
 
     if ($message = $this->has_error()) {
       $error = new SafeException("Database failure '$message'");
-      $error->queries = $sql;
+      $error->query = $sql;
       throw $error;
     }
 
