@@ -7,16 +7,32 @@ class Hasher implements \Countable, \ArrayAccess, \IteratorAggregate, \JsonSeria
 
   private $value = NULL;
   private $wrapper = NULL;
+  private $settings = NULL;
 
-  public function __construct($test, $instance)
+  public function __construct($test, $result, $context = [])
   {
     $this->value = $test;
-    $this->wrapper = $instance;
+    $this->wrapper = $result;
+    $this->settings = $context;
   }
 
   public function __call($method, $arguments)
   {
     array_unshift($arguments, $this->value);
+
+    if (in_array($method, ['fetch', 'fetch_all'])) {
+        $arguments []= $this->settings;
+    }
+
+    if ($method === 'update') {
+        $arguments[0] = $this->settings['table'];
+        $arguments[2] = array_merge($this->settings['where'], !empty($arguments[2]) ? $arguments[2] : []);
+    }
+
+    if ($method === 'delete') {
+        $arguments[0] = $this->settings['table'];
+        $arguments[1] = array_merge($this->settings['where'], !empty($arguments[1]) ? $arguments[1] : []);
+    }
 
     return call_user_func_array(array($this->wrapper, $method), $arguments);
   }

@@ -10,7 +10,7 @@ class Query extends Dump
 
   public function select($table, $fields = '*', array $where = array(), array $options = array())
   {
-    return new \Grocery\Handle\Result($this->query($this->build_select($table, $fields, $where, $options)), $this);
+    return new \Grocery\Handle\Result($this->query($this->build_select($table, $fields, $where, $options)), $this, compact('table', 'where'));
   }
 
   public function insert($table, array $values, $column = NULL)
@@ -61,16 +61,16 @@ class Query extends Dump
     return $out;
   }
 
-  public function result($test, $default = FALSE)
+  public function result($test)
   {
     if (is_string($test)) {
       $test = $this->query($test);
     }
 
-    return $this->fetch_result($test) ?: $default;
+    return $this->fetch_result($test);
   }
 
-  public function fetch_all($result)
+  public function fetch_all($result, $context = NULL)
   {
     $out = array();
 
@@ -80,16 +80,16 @@ class Query extends Dump
       $result   = call_user_func_array(array($this, $callback), $args);
     }
 
-    while ($row = $this->fetch($result)) {
+    while ($row = $this->fetch($result, $context)) {
       $out []= $row;
     }
 
     return $out;
   }
 
-  public function fetch($result)
+  public function fetch($result, $context = NULL)
   {
-    return ($tmp = $this->fetch_assoc($result)) ? new \Grocery\Handle\Record($tmp, $this) : FALSE;
+    return ($tmp = $this->fetch_assoc($result)) ? new \Grocery\Handle\Record($tmp, $this, $context) : FALSE;
   }
 
   public function numrows($result)
