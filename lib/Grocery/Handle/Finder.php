@@ -13,8 +13,8 @@ class Finder extends Hasher
                     'where',
                     'limit',
                     'offset',
-                    'group',
-                    'order',
+                    'group_by',
+                    'order_by',
                     'join',
                     'get',
                   );
@@ -158,6 +158,11 @@ class Finder extends Hasher
   public function count(): int
   {
     return $this->__call('count', array());
+  }
+
+  public function get($key, $fallback = null)
+  {
+    return isset($this->params[$key]) ? $this->params[$key] : $fallback;
   }
 
 }

@@ -49,6 +49,10 @@ class SQLite
     return \Grocery\Base::plain('CURRENT_TIMESTAMP');
   }
 
+  public function rand() {
+    return \Grocery\Base::plain('RANDOM()');
+  }
+
   public function stats()
   {
     return $this->bm->all();

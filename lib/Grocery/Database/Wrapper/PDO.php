@@ -42,6 +42,13 @@ class PDO
     return \Grocery\Base::plain('NOW()');
   }
 
+  public function rand() {
+    if ($this->res->getAttribute(\PDO::ATTR_DRIVER_NAME) === 'mysql') {
+      return \Grocery\Base::plain('RAND()');
+    }
+    return \Grocery\Base::plain('RANDOM()');
+  }
+
   public function stats()
   {
     return $this->bm->all();

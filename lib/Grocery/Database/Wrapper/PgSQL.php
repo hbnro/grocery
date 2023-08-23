@@ -30,6 +30,10 @@ class PgSQL
     return \Grocery\Base::plain('NOW()');
   }
 
+  public function rand() {
+    return \Grocery\Base::plain('RANDOM()');
+  }
+
   public function stats()
   {
     return $this->bm->all();

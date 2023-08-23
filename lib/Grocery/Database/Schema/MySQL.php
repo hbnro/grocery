@@ -5,8 +5,6 @@ namespace Grocery\Database\Schema;
 class MySQL extends \Grocery\Database\SQL\Schema
 {
 
-  public static $random = 'RAND()';
-
   public static $types = array(
                   'VARCHAR' => 'string',
                   'LONGTEXT' => 'string',

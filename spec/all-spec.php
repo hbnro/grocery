@@ -119,6 +119,31 @@ describe('Grocery', function () {
               expect($test[1]->x)->toEqual(456);
             });
 
+            it('can insert records', function ($a) {
+              $a->insert(['x' => 1]);
+            });
+
+            it('can count records', function ($a) {
+              expect(count($a->where(['x' => 1])))->toEqual(1);
+            });
+
+            it('can select records', function ($a, $db) {
+              expect($a->where(['x' => 1])->order([$db->rand()])->first()->x)->toEqual('1');
+            });
+
+            it('can update records', function ($a) {
+              $old = $a->where(['x' => 1])->first();
+              $old->update(['x' => 42]);
+
+              expect($a->where(['x' => 42])->first()->x)->toEqual('42');
+            });
+
+            it('can delete records', function ($a) {
+                $a->where(['x' => 42])->delete();
+
+                expect($a->where(['x' => 42])->count())->toEqual(0);
+            });
+
             it('should add columns on extra fields', function ($a) {
               DBO::hydrate($a, ['x' => 'integer', 'y' => 'integer']);
             });

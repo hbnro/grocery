@@ -133,7 +133,7 @@ class Helpers
 
   public static function is_keyword($test)
   {
-    return ($test == 'and') OR ($test == 'or');
+    return ($test == 'AND') OR ($test == 'OR');
   }
 
   public static function is_assoc($set)

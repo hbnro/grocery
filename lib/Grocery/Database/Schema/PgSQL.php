@@ -5,8 +5,6 @@ namespace Grocery\Database\Schema;
 class PgSQL extends \Grocery\Database\SQL\Schema
 {
 
-  public static $random = 'RANDOM()';
-
   public static $types = array(
                   'CHARACTER' => 'string',
                   'VARCHAR' => 'string',

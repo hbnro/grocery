@@ -82,13 +82,13 @@ class Dump extends Base
       $sql .= "\nWHERE\n" . $this->build_where($where, 'AND', $table);
     }
 
-    if (!empty($options['group'])) {
+    if (!empty($options['group_by'])) {
       $sql .= "\nGROUP BY";
 
-      if (is_array($options['group'])) {
+      if (is_array($options['group_by'])) {
         $sub = array();
 
-        foreach ($options['group'] as $one) {
+        foreach ($options['group_by'] as $one) {
           $sub []= $this->protect_names("$table.$one");
         }
         $sql .= "\n " . join(",\n ", $sub);
@@ -97,19 +97,24 @@ class Dump extends Base
       }
     }
 
-    if (!empty($options['order'])) {
+    if (!empty($options['order_by'])) {
       $inc  = 0;
       $sql .= "\nORDER BY";
 
-      foreach ((array) $options['order'] as $one => $set) {
+      foreach ((array) $options['order_by'] as $one => $set) {
         if (($inc += 1) > 1) {
           $sql .= ', ';
         }
 
         if (is_numeric($one)) {
-          $order = strtoupper($set[1]);
           $sql .= "\n ";
-          $sql .= $set == 'random' ? static::$random : $this->protect_names("$table.$set[0]") . " $order";
+          if ($set instanceof Raw) {
+            $sql .= $set->__toString();
+            continue 1;
+          } else {
+            $order = strtoupper($set[1]);
+            $sql .= $this->protect_names("$table.$set[0]") . " $order";
+          }
           continue 1;
         }
 
@@ -322,6 +327,10 @@ class Dump extends Base
 
   protected function protect_names($test)
   {
+    if ($test instanceof Raw) {
+      return $test->__toString();
+    }
+
     $set = array_map('\\Grocery\\Helpers::trim', explode(',', $test));
 
     foreach ($set as $i => $val) {

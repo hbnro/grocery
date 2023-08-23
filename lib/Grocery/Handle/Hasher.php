@@ -25,13 +25,14 @@ class Hasher implements \Countable, \ArrayAccess, \IteratorAggregate, \JsonSeria
     }
 
     if ($method === 'update') {
-        $arguments[0] = $this->settings['table'];
-        $arguments[2] = !empty($arguments[2]) ? $arguments[2] : $this->settings['where'];
+        $arguments[0] = $this->get('table') ?: $arguments[0];
+        $arguments[2] = !empty($arguments[2]) ? $arguments[2] : $this->get('where');
     }
 
     if ($method === 'delete') {
-        $arguments[0] = $this->settings['table'];
-        $arguments[1] = !empty($arguments[1]) ? $arguments[1] : $this->settings['where'];
+        $arguments[0] = $this->get('table') ?: $arguments[0];
+        if (isset($arguments[1]) && is_numeric($arguments[1])) $arguments[2] = $arguments[1];
+        $arguments[1] = isset($arguments[1]) && is_array($arguments[1]) ? $arguments[1] : $this->get('where');
     }
 
     return call_user_func_array(array($this->wrapper, $method), $arguments);
@@ -130,6 +131,11 @@ class Hasher implements \Countable, \ArrayAccess, \IteratorAggregate, \JsonSeria
   public function to_a()
   {
     return $this->value;
+  }
+
+  public function get($key, $or = null)
+  {
+    return isset($this->settings[$key]) ? $this->settings[$key] : $this->params->get($key, $or);
   }
 
 }

@@ -5,8 +5,6 @@ namespace Grocery\Database\Schema;
 class SQLite extends \Grocery\Database\SQL\Schema
 {
 
-  public static $random = 'RANDOM()';
-
   public static $types = array(
                   'CHARACTER' => 'string',
                   'NVARCHAR' => 'string',
