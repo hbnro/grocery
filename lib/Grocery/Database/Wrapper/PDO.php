@@ -34,6 +34,14 @@ class PDO
     return $obj;
   }
 
+  public function now()
+  {
+    if ($this->res->getAttribute(\PDO::ATTR_DRIVER_NAME) === 'sqlite') {
+      return \Grocery\Base::plain('CURRENT_TIMESTAMP');
+    }
+    return \Grocery\Base::plain('NOW()');
+  }
+
   public function stats()
   {
     return $this->bm->all();

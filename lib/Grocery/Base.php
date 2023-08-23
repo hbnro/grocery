@@ -82,4 +82,9 @@ class Base
     return $obj;
   }
 
+  public static function plain($sql)
+  {
+    return new \Grocery\Database\SQL\Raw($sql);
+  }
+
 }

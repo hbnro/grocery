@@ -148,7 +148,7 @@ class SQLite extends \Grocery\Database\SQL\Schema
       $out[$row['name']] = array(
           'type' => $row['pk'] > 0 ? 'PRIMARY_KEY' : $match[1],
           'length' => !empty($match[2]) ? (int) $match[2] : 0,
-          'default' => trim($row['dflt_value'] ?: '', "(')"),
+          'default' => \Grocery\Base::plain($row['dflt_value'] ?: ''),
           'not_null' => $row['notnull'] > 0,
       );
     }

@@ -155,7 +155,7 @@ class PgSQL extends \Grocery\Database\SQL\Schema
       $out[$key] = array(
         'type' => $id ? 'PRIMARY_KEY' : strtoupper($type),
         'length' => (int) array_shift($row),
-        'default' => trim(array_shift($row), "(')"),
+        'default' => \Grocery\Base::plain(array_shift($row)),
         'not_null' => array_shift($row) == 'NO',
       );
     }

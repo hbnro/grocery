@@ -349,6 +349,8 @@ class Dump extends Base
       return array_map(array($this, 'fixate_value'), $test);
     } elseif (is_string($test)) {
       return "'" . $this->real_escape($test) . "'";
+    } elseif ($test instanceof Raw) {
+      return $test->__toString();
     }
 
     return $this->ensure_type($test);

@@ -44,6 +44,11 @@ class SQLite
     return $obj;
   }
 
+  public function now()
+  {
+    return \Grocery\Base::plain('CURRENT_TIMESTAMP');
+  }
+
   public function stats()
   {
     return $this->bm->all();

@@ -1,5 +1,13 @@
 <?php
 
+use Grocery\Base as DB;
+use Grocery\Helpers as DBO;
+use Grocery\Config as Config;
+
+#Config::set('logger', function ($sql, $ms) {
+#    echo "\n-- $sql\n-- $ms\n";
+#});
+
 describe('Grocery', function () {
   $datasources = array_filter([
     'sqlite::memory:',
@@ -11,7 +19,7 @@ describe('Grocery', function () {
   ]);
 
   $suitcase = function ($conn) {
-    $db = \Grocery\Base::connect($conn);
+    $db = DB::connect($conn);
     $version = json_encode($db->version());
 
     describe("Using $conn / $version", function () use ($db) {
@@ -82,7 +90,7 @@ describe('Grocery', function () {
       describe('Helpers', function () {
         describe('hydrate()', function () {
           before(function ($db) {
-            $db->reset()->create('a', ['id' => 'primary_key', 'x' => 'integer']);
+            $db->reset()->create('a', ['id' => 'primary_key', 'x' => ['type' => 'integer', 'default' => $db->now()]]);
 
             $db->a->insert(['x' => 123]);
             $db->a->insert(['x' => 456]);
@@ -97,7 +105,7 @@ describe('Grocery', function () {
 
           describe('columns', function () {
             it('should be able to migrate', function ($a) {
-              \Grocery\Helpers::hydrate($a, ['x' => 'string']);
+              DBO::hydrate($a, ['x' => 'string']);
 
               $b = $a->columns();
 
@@ -112,17 +120,17 @@ describe('Grocery', function () {
             });
 
             it('should add columns on extra fields', function ($a) {
-              \Grocery\Helpers::hydrate($a, ['x' => 'integer', 'y' => 'integer']);
+              DBO::hydrate($a, ['x' => 'integer', 'y' => 'integer']);
             });
 
             it('should remove columns on missing fields', function ($a) {
-              \Grocery\Helpers::hydrate($a, ['x' => 'integer']);
+              DBO::hydrate($a, ['x' => 'integer']);
             });
           });
 
           describe('indexes', function() {
             it('should add indexes when they are provided', function ($a) {
-              \Grocery\Helpers::hydrate($a, ['x' => 'integer', 'y' => 'integer'], ['x']);
+              DBO::hydrate($a, ['x' => 'integer', 'y' => 'integer'], ['x']);
 
               $test = $a->indexes();
 
@@ -130,7 +138,7 @@ describe('Grocery', function () {
             });
 
             it('should set indexes as unique when passing true', function ($a) {
-              \Grocery\Helpers::hydrate($a, ['x' => 'integer', 'y' => 'integer'], ['x', 'y' => true]);
+              DBO::hydrate($a, ['x' => 'integer', 'y' => 'integer'], ['x', 'y' => true]);
 
               $test = $a->indexes();
 
@@ -138,7 +146,7 @@ describe('Grocery', function () {
             });
 
             it('should remove indexes when they are missing', function ($a) {
-              \Grocery\Helpers::hydrate($a, ['x' => 'integer', 'y' => 'integer'], ['y' => false]);
+              DBO::hydrate($a, ['x' => 'integer', 'y' => 'integer'], ['y' => false]);
 
               $test = $a->indexes();
 

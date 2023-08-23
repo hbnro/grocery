@@ -132,7 +132,7 @@ class MySQL extends \Grocery\Database\SQL\Schema
       $out[$row['Field']] = array(
           'type' => $row['Extra'] == 'auto_increment' ? 'PRIMARY_KEY' : $match[1],
           'length' => !empty($match[2]) ? (int) $match[2] : 0,
-          'default' =>  $row['Default'],
+          'default' => \Grocery\Base::plain($row['Default']),
           'not_null' => $row['Null'] <> 'YES',
       );
     }

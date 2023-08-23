@@ -25,6 +25,11 @@ class PgSQL
     return $obj;
   }
 
+  public function now()
+  {
+    return \Grocery\Base::plain('NOW()');
+  }
+
   public function stats()
   {
     return $this->bm->all();
