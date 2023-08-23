@@ -37,7 +37,7 @@ class Hasher implements \Countable, \ArrayAccess, \IteratorAggregate, \JsonSeria
             $arguments[1] = isset($arguments[1]) && is_array($arguments[1]) ? $arguments[1] : $this->get('where');
         }
 
-        return call_user_func_array(array($this->wrapper, $method), $arguments);
+        return call_user_func_array([$this->wrapper, $method], $arguments);
     }
 
     public function __get($key)

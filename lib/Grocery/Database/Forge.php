@@ -8,10 +8,10 @@ class Forge extends \Grocery\Handle\Table
     public function scheme()
     {
         return \Grocery\Helpers::map($this, function ($obj) {
-            return array(
-            'columns' => $obj->columns(),
-            'indexes' => $obj->indexes(),
-            );
+            return [
+                'columns' => $obj->columns(),
+                'indexes' => $obj->indexes(),
+            ];
         });
     }
 

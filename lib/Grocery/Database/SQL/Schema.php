@@ -20,7 +20,7 @@ class Schema extends Query
         return (boolean) $this->rollback_transaction();
     }
 
-    public function create($name, array $columns = array())
+    public function create($name, array $columns = [])
     {
         return $this->query($this->build_table($name, $columns));
     }
@@ -39,7 +39,7 @@ class Schema extends Query
 
         if (!is_array($old)) {
             if ($raw) {
-                return array_map(array($this, 'execute'), \Grocery\Helpers::sql_split($test));
+                return array_map([$this, 'execute'], \Grocery\Helpers::sql_split($test));
             }
 
             return false;
@@ -60,15 +60,15 @@ class Schema extends Query
 
     public function export($mask = '*', $data = false, $raw = false)
     {
-        $out = array();
+        $out = [];
 
         foreach ($this->tables($mask) as $one) {
             foreach ($this->columns($one) as $key => $val) {
-                $out[$one]['scheme'][$key] = array(
+                $out[$one]['scheme'][$key] = [
                 $val['type'],
                 $val['length'],
                 $val['default'],
-                );
+                ];
             }
 
             if ($data) {
@@ -78,7 +78,7 @@ class Schema extends Query
         }
 
         if ($raw) {
-            $old = array();
+            $old = [];
 
             foreach ($out as $key => $val) {
                 $old []= $this->build_table($key, $val['scheme']) . ';';
@@ -104,7 +104,7 @@ class Schema extends Query
 
     public function tables($filter = '*')
     {
-        $out  = array();
+        $out  = [];
         $test = $this->fetch_tables();
 
         if ($filter === '*') {
@@ -122,7 +122,7 @@ class Schema extends Query
 
     public function columns($of)
     {
-        $out = array();
+        $out = [];
         $test = $this->fetch_columns($of);
 
         foreach ($test as $key => $val) {

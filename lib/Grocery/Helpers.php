@@ -5,18 +5,18 @@ namespace Grocery;
 class Helpers
 {
 
-    private static $mask = array(
+    private static $mask = [
                     'numeric' => 'string',
                     'boolean' => 'integer',
                     'timestamp' => 'datetime',
-                  );
+                  ];
 
-    public static function hydrate($table, array $columns, array $indexes = array())
+    public static function hydrate($table, array $columns, array $indexes = [])
     {
         $old = $table->columns();
 
         foreach ($columns as $key => $val) {
-            is_array($val) or $val = array($val);
+            is_array($val) or $val = [$val];
 
             if (!\Grocery\Helpers::is_assoc($val)) {
                 @list($type, $length, $default, $not_null) = $val;
@@ -54,7 +54,7 @@ class Helpers
         }
 
         $tmp =
-        $out = array();
+        $out = [];
         $idx = $table->indexes();
 
         foreach ($idx as $name => $set) {
@@ -98,7 +98,7 @@ class Helpers
         $length = strlen($test);
 
         $str = false;
-        $out = array();
+        $out = [];
 
         for ($i = 0; $i < $length; $i += 1) {
             $char = substr($test, $i, 1);
@@ -141,7 +141,7 @@ class Helpers
         return is_array($set) && is_string(key($set));
     }
 
-    public static function merge($as, array $are = array())
+    public static function merge($as, array $are = [])
     {
         if (!empty($are[0]) && static::is_assoc($are[0])) {
             return $are[0];
@@ -153,7 +153,7 @@ class Helpers
         $keys   = array_slice($as, 0, $length);
         $values = array_slice($are, 0, $length);
 
-        return $keys && $values ? array_combine($keys, $values) : array();
+        return $keys && $values ? array_combine($keys, $values) : [];
     }
 
     public static function trim($test)
@@ -163,7 +163,7 @@ class Helpers
 
     public static function map($test, \Closure $lambda)
     {
-        $out = array();
+        $out = [];
 
         foreach ($test as $key => $val) {
             $out[$key] = $lambda($val);

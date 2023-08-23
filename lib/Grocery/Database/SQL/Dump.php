@@ -5,10 +5,10 @@ namespace Grocery\Database\SQL;
 class Dump extends Base
 {
 
-    protected static $regex = array(
+    protected static $regex = [
                     'delete' => '/^\s*DELETE\s+FROM\s+(\S+)\s*$/is',
                     'limit' => '/\s+LIMIT\s+(\d+)(?:\s*(?:,|\s+TO\s+)\s*(\d+))?\s*$/i',
-                  );
+                  ];
 
     protected function build_field($type, $length = 0, $default = null, $not_null = false)
     {
@@ -53,7 +53,7 @@ class Dump extends Base
         return $type;
     }
 
-    protected function build_table($name, array $columns = array())
+    protected function build_table($name, array $columns = [])
     {
         $name = $this->quote_string($name);
         $sql  = "CREATE TABLE $name";
@@ -69,7 +69,7 @@ class Dump extends Base
         return $sql;
     }
 
-    protected function build_select($table, $fields = '*', array $where = array(), array $options = array())
+    protected function build_select($table, $fields = '*', array $where = [], array $options = [])
     {
         if (!empty($options['join'])) {
             $sql = $this->build_joins($table, $fields, $options['join']);
@@ -86,7 +86,7 @@ class Dump extends Base
             $sql .= "\nGROUP BY";
 
             if (is_array($options['group_by'])) {
-                $sub = array();
+                $sub = [];
 
                 foreach ($options['group_by'] as $one) {
                     $sub []= $this->protect_names("$table.$one");
@@ -141,7 +141,7 @@ class Dump extends Base
         return $this->query_repare($sql, $primary_key);
     }
 
-    protected function build_delete($table, array $where = array(), $limit = 0, $primary_key = null)
+    protected function build_delete($table, array $where = [], $limit = 0, $primary_key = null)
     {
         $sql = "DELETE FROM\n" . $this->build_fields($table);
         $sql .= $where ? "\nWHERE\n" . $this->build_where($where) : '';
@@ -150,7 +150,7 @@ class Dump extends Base
         return $this->query_repare($sql, $primary_key);
     }
 
-    protected function build_update($table, array $fields, array $where = array(), $limit = 0, $primary_key = null)
+    protected function build_update($table, array $fields, array $where = [], $limit = 0, $primary_key = null)
     {
         $sql  = "UPDATE\n" . $this->build_fields($table);
         $sql .= "\nSET\n" . $this->build_values($fields, false);
@@ -163,10 +163,10 @@ class Dump extends Base
     protected function build_joins($table, array $fields, array $set)
     {
         $sub =
-        $out = array();
+        $out = [];
 
         if (!isset($set[0])) {
-            $set = array($set);
+            $set = [$set];
         }
 
         foreach ($fields as $k => $v) {
@@ -200,7 +200,7 @@ class Dump extends Base
 
     protected function build_fields($values)
     {
-        $sql = array();
+        $sql = [];
 
         foreach ((array) $values as $key => $val) {
             if (strlen(trim($val)) == 0) {
@@ -218,11 +218,11 @@ class Dump extends Base
 
     protected function build_values($fields, $insert = false)
     {
-        $sql    = array();
+        $sql    = [];
         $fields = (array) $fields;
 
         if ($insert) {
-            $cols = array();
+            $cols = [];
 
             foreach (array_keys($fields) as $one) {
                 $cols []= $this->quote_string($one);
@@ -232,7 +232,7 @@ class Dump extends Base
             $sql []= "\nVALUES\n(\n";
         }
 
-        $out   = array();
+        $out   = [];
         $count = 0;
         $total = sizeof($fields);
 
@@ -262,7 +262,7 @@ class Dump extends Base
 
     protected function build_where($test, $operator = 'AND', $supertable = false)
     {
-        $sql        = array();
+        $sql        = [];
         $operator   = strtoupper($operator);
         $sub_prefix = $supertable ? $this->protect_names($supertable) . '.' : '';
 
@@ -281,7 +281,7 @@ class Dump extends Base
             } elseif (\Grocery\Helpers::is_keyword($key)) {
                 $sql []= '(' . trim($this->build_where($val, strtoupper($key), $supertable)) . ')';
             } elseif (preg_match('/_(?:and|or)_/i', $key, $match)) {
-                $sub = array();
+                $sub = [];
                 foreach (explode($match[0], $key) as $one) {
                     $sub[$one] = $val;
                 }
@@ -298,7 +298,7 @@ class Dump extends Base
                 }
 
                 if (is_array($val) && (sizeof($val) > 1)) {
-                    $key  .= in_array($sub, array('!=', '<>')) ? ' NOT' : '';
+                    $key  .= in_array($sub, ['!=', '<>']) ? ' NOT' : '';
                     $sql []= " $sub_prefix$key IN(" . join(', ', $val) . ")";
                 } else {
                     $val   = is_array($val) ? array_shift($val) : $val;
@@ -316,7 +316,7 @@ class Dump extends Base
             $test = $this->ensure_id($test, $pk);
         } else {
             if (method_exists($this, 'ensure_limit')) {
-                $test = preg_replace_callback(self::$regex['limit'], array($this, 'ensure_limit'), $test);
+                $test = preg_replace_callback(self::$regex['limit'], [$this, 'ensure_limit'], $test);
             }
 
             $test = preg_replace(self::$regex['delete'], 'DELETE FROM \\1 WHERE 1=1', $test);
@@ -355,7 +355,7 @@ class Dump extends Base
     protected function fixate_value($test, $map = false)
     {
         if (is_array($test) && $map) {
-            return array_map(array($this, 'fixate_value'), $test);
+            return array_map([$this, 'fixate_value'], $test);
         } elseif (is_string($test)) {
             return "'" . $this->real_escape($test) . "'";
         } elseif ($test instanceof Raw) {

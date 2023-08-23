@@ -10,7 +10,7 @@ class SafeException extends \Exception
 class Query extends Dump
 {
 
-    public function select($table, $fields = '*', array $where = array(), array $options = array())
+    public function select($table, $fields = '*', array $where = [], array $options = [])
     {
         return new \Grocery\Handle\Result($this->query($this->build_select($table, $fields, $where, $options)), $this, compact('table', 'where'));
     }
@@ -20,24 +20,23 @@ class Query extends Dump
         return $this->inserted($this->query($this->build_insert($table, $values, $column)));
     }
 
-    public function delete($table, array $where = array(), $limit = 0, $column = null)
+    public function delete($table, array $where = [], $limit = 0, $column = null)
     {
         return $this->affected($this->query($this->build_delete($table, $where, $limit, $column)));
     }
 
-    public function update($table, array $fields, array $where = array(), $limit = 0, $column = null)
+    public function update($table, array $fields, array $where = [], $limit = 0, $column = null)
     {
         return $this->affected($this->query($this->build_update($table, $fields, $where, $limit, $column)));
     }
 
-    public function prepare($sql, array $vars = array())
+    public function prepare($sql, array $vars = [])
     {
         if (\Grocery\Helpers::is_assoc($vars)) {
             $sql = strtr($sql, $this->fixate_value($vars, true));
         } else {
             $args = $this->fixate_value($vars, true);
-            $sql  = preg_replace_callback('/((?<!\\\)\?)/', function ()
- use ($args) {
+            $sql  = preg_replace_callback('/((?<!\\\)\?)/', function () use ($args) {
                 return array_shift($args);
             }, $sql);
         }
@@ -45,7 +44,7 @@ class Query extends Dump
         return $sql;
     }
 
-    public function query($sql, $repl = array())
+    public function query($sql, $repl = [])
     {
         if (func_num_args() > 1) {
             $args = func_num_args() > 2 ? func_get_args() : (array) $repl;
@@ -74,12 +73,12 @@ class Query extends Dump
 
     public function fetch_all($result, $context = null)
     {
-        $out = array();
+        $out = [];
 
         if (is_string($result)) {
             $args     = func_get_args();
             $callback = strpos($result, ' ') ? 'query' : 'select';
-            $result   = call_user_func_array(array($this, $callback), $args);
+            $result   = call_user_func_array([$this, $callback], $args);
         }
 
         while ($row = $this->fetch($result, $context)) {

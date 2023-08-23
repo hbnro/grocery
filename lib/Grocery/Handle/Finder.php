@@ -7,9 +7,9 @@ class Finder extends Hasher
 
     private $offset = null;
 
-    private $params = array();
+    private $params = [];
 
-    private static $chained = array(
+    private static $chained = [
                     'where',
                     'limit',
                     'offset',
@@ -17,21 +17,21 @@ class Finder extends Hasher
                     'order_by',
                     'join',
                     'get',
-                  );
+                  ];
 
-    private static $retrieve = array(
+    private static $retrieve = [
                     'get',
                     'all',
                     'pick',
                     'first',
                     'each',
                     'count',
-                  );
+                  ];
 
-    private static $options = array(
-                    'select' => array(),
-                    'where' => array(),
-                  );
+    private static $options = [
+                    'select' => [],
+                    'where' => [],
+                  ];
 
     public function __get($key)
     {
@@ -89,7 +89,7 @@ class Finder extends Hasher
         switch ($method) {
             case in_array($method, static::$retrieve);
                 $params = array_merge(static::$options, $this->params);
-                $this->params = array();
+                $this->params = [];
 
                 switch ($method) {
                     case 'all';
@@ -140,7 +140,7 @@ class Finder extends Hasher
             case 'index';
                 @list($name, $unique) = $arguments;
 
-            return $this->add_index("{$this}_{$this->offset}_{$name}_idx", array($this->offset), !!$unique);
+            return $this->add_index("{$this}_{$this->offset}_{$name}_idx", [$this->offset], !!$unique);
             case 'unindex';
                 @list($name) = $arguments;
 
@@ -158,7 +158,7 @@ class Finder extends Hasher
 
     public function count(): int
     {
-        return $this->__call('count', array());
+        return $this->__call('count', []);
     }
 
     public function get($key, $fallback = null)

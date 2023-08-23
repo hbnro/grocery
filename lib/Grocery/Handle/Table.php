@@ -98,7 +98,7 @@ class Table extends Hasher
 
     public function getIterator(): \Traversable
     {
-        $test = array();
+        $test = [];
         foreach ($this->tables() as $one) {
             $test[$one] = new \Grocery\Handle\Table($one, $this);
         }
@@ -118,7 +118,7 @@ class Table extends Hasher
 
     public function to_s()
     {
-        $out = array();
+        $out = [];
         foreach ($this->tables() as $one) {
             $out []= $this->build_table($one, $this->columns($one));
 

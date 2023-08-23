@@ -5,10 +5,10 @@ namespace Grocery;
 class Base
 {
 
-    private static $multi = array();
+    private static $multi = [];
     private static $regex = '/^\w+:|scheme\s*=\s*\w+/';
 
-    private static $defaults = array(
+    private static $defaults = [
                     'scheme' => 'sqlite::memory:',
                     'host' => '',
                     'port' => '',
@@ -17,14 +17,14 @@ class Base
                     'path' => '',
                     'query' => '',
                     'fragment' => '',
-                  );
+                  ];
 
-    public static $available = array(
+    public static $available = [
                     // back to basics
                     'pgsql' => '\\Grocery\\Database\\@\\PgSQL',
                     'mysql' => '\\Grocery\\Database\\@\\MySQL',
                     'sqlite' => '\\Grocery\\Database\\@\\SQLite',
-                  );
+                  ];
 
     public static $types = [
                     'pk' => 'primary_key',
@@ -52,7 +52,7 @@ class Base
             throw new \Exception("Unable to determine connection scheme for '$to'");
         } elseif (!isset(static::$multi[$to])) {
             if (strrpos($to, ';')) {
-                $params = array();
+                $params = [];
 
                 $old = explode(';', $to);
                 $old = array_map('trim', $old);
@@ -73,7 +73,7 @@ class Base
         return static::$multi[$to];
     }
 
-    public static function factory(array $params = array(), $raw = false)
+    public static function factory(array $params = [], $raw = false)
     {
         $params = array_merge(static::$defaults, $params);
 

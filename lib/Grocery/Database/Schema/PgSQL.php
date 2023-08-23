@@ -5,7 +5,7 @@ namespace Grocery\Database\Schema;
 class PgSQL extends \Grocery\Database\SQL\Schema
 {
 
-    public static $types = array(
+    public static $types = [
                   'CHARACTER' => 'string',
                   'VARCHAR' => 'string',
                   'CHAR' => 'string',
@@ -19,14 +19,14 @@ class PgSQL extends \Grocery\Database\SQL\Schema
                   'DOUBLE' => 'float',
                   'REAL' => 'float',
                   'BYTEA' => 'binary',
-                );
+                ];
 
-    public static $raw = array(
+    public static $raw = [
                   'primary_key' => 'SERIAL PRIMARY KEY',
-                  'string' => array('type' => 'CHARACTER varying', 'length' => 255),
+                  'string' => ['type' => 'CHARACTER varying', 'length' => 255],
                   'datetime'=> 'TIMESTAMP',
                   'binary'=> 'BYTEA',
-                );
+                ];
 
     public function rename($from, $to)
     {
@@ -113,7 +113,7 @@ class PgSQL extends \Grocery\Database\SQL\Schema
 
     public function fetch_tables()
     {
-        $out = array();
+        $out = [];
 
         $sql = "SELECT tablename FROM pg_tables WHERE tablename "
          . "!~ '^pg_+' AND schemaname = 'public'";
@@ -129,7 +129,7 @@ class PgSQL extends \Grocery\Database\SQL\Schema
 
     public function fetch_columns($test)
     {
-        $out = array();
+        $out = [];
 
         $sql = "SELECT DISTINCT "
          . "column_name, data_type AS t, character_maximum_length, column_default AS d,"
@@ -150,12 +150,12 @@ class PgSQL extends \Grocery\Database\SQL\Schema
             $key  = array_shift($row);
             $type = array_shift($row);
 
-            $out[$key] = array(
-            'type' => $id ? 'PRIMARY_KEY' : strtoupper($type),
-            'length' => (int) array_shift($row),
-            'default' => \Grocery\Base::plain(array_shift($row)),
-            'not_null' => array_shift($row) == 'NO',
-            );
+            $out[$key] = [
+                'type' => $id ? 'PRIMARY_KEY' : strtoupper($type),
+                'length' => (int) array_shift($row),
+                'default' => \Grocery\Base::plain(array_shift($row)),
+                'not_null' => array_shift($row) == 'NO',
+            ];
         }
 
         return $out;
@@ -163,17 +163,17 @@ class PgSQL extends \Grocery\Database\SQL\Schema
 
     public function fetch_indexes($test)
     {
-        $out = array();
+        $out = [];
 
         $sql = "select pg_get_indexdef(indexrelid) AS sql from pg_index where indrelid = '$test'::regclass";
 
         if ($res = $this->execute($sql)) {
             while ($one = $this->fetch_assoc($res)) {
                 if (preg_match('/CREATE(\s+UNIQUE|)\s+INDEX\s+(\w+)\s+ON.+?\((.+?)\)/', $one['sql'], $match)) {
-                    $out[$match[2]] = array(
-                    'unique' => !empty($match[1]),
-                    'column' => explode(',', preg_replace('/["\s]/', '', $match[3])),
-                    );
+                    $out[$match[2]] = [
+                        'unique' => !empty($match[1]),
+                        'column' => explode(',', preg_replace('/["\s]/', '', $match[3])),
+                    ];
                 }
             }
         }

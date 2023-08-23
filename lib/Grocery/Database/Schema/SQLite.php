@@ -5,7 +5,7 @@ namespace Grocery\Database\Schema;
 class SQLite extends \Grocery\Database\SQL\Schema
 {
 
-    public static $types = array(
+    public static $types = [
                   'CHARACTER' => 'string',
                   'NVARCHAR' => 'string',
                   'VARCHAR' => 'string',
@@ -23,14 +23,14 @@ class SQLite extends \Grocery\Database\SQL\Schema
                   'DECIMAL' => 'numeric',
                   'BLOB' => 'binary',
                   'DATETIME' => 'timestamp',
-                );
+                ];
 
-    public static $raw = array(
+    public static $raw = [
                   'primary_key' => 'INTEGER NOT NULL PRIMARY KEY',
-                  'string' => array('type' => 'VARCHAR', 'length' => 255),
+                  'string' => ['type' => 'VARCHAR', 'length' => 255],
                   'timestamp' => 'DATETIME',
                   'binary' => 'BLOB',
-                );
+                ];
 
     public function rename($from, $to)
     {
@@ -52,11 +52,11 @@ class SQLite extends \Grocery\Database\SQL\Schema
         $set = $this->columns($from);
         $old = $set[$name];
 
-        $this->add_column($from, $to, array(
-        $old['type'],
-        $old['length'],
-        $old['default'],
-        ));
+        $this->add_column($from, $to, [
+            $old['type'],
+            $old['length'],
+            $old['default'],
+        ]);
 
         $this->execute(sprintf('UPDATE "%s" SET "%s" = "%s"', $from, $to, $name));
 
@@ -65,7 +65,7 @@ class SQLite extends \Grocery\Database\SQL\Schema
 
     public function change_column($from, $name, $to)
     {
-        $new = array();
+        $new = [];
 
         foreach ($this->columns($from) as $key => $val) {
             if ($key === $name) {
@@ -73,11 +73,11 @@ class SQLite extends \Grocery\Database\SQL\Schema
                 continue 1;
             }
 
-            $new[$key] = array(
-            $val['type'],
-            $val['length'],
-            $val['default'],
-            );
+            $new[$key] = [
+                $val['type'],
+                $val['length'],
+                $val['default'],
+            ];
         }
 
         $this->begin();
@@ -123,7 +123,7 @@ class SQLite extends \Grocery\Database\SQL\Schema
 
     public function fetch_tables()
     {
-        $out = array();
+        $out = [];
         $sql = "SELECT name FROM sqlite_master WHERE type = 'table'";
         $old = $this->execute($sql);
 
@@ -136,19 +136,19 @@ class SQLite extends \Grocery\Database\SQL\Schema
 
     public function fetch_columns($test)
     {
-        $out = array();
+        $out = [];
         $sql = "PRAGMA table_info('$test')";
         $old = $this->execute($sql);
 
         while ($row = $this->fetch_assoc($old)) {
             preg_match('/^(\w+)(?:\((\d+)\))?.*?$/', strtoupper($row['type']), $match);
 
-            $out[$row['name']] = array(
-            'type' => $row['pk'] > 0 ? 'PRIMARY_KEY' : $match[1],
-            'length' => !empty($match[2]) ? (int) $match[2] : 0,
-            'default' => \Grocery\Base::plain($row['dflt_value'] ?: ''),
-            'not_null' => $row['notnull'] > 0,
-            );
+            $out[$row['name']] = [
+                'type' => $row['pk'] > 0 ? 'PRIMARY_KEY' : $match[1],
+                'length' => !empty($match[2]) ? (int) $match[2] : 0,
+                'default' => \Grocery\Base::plain($row['dflt_value'] ?: ''),
+                'not_null' => $row['notnull'] > 0,
+            ];
         }
 
         return $out;
@@ -158,15 +158,15 @@ class SQLite extends \Grocery\Database\SQL\Schema
     {
         $res = $this->execute("SELECT name,sql FROM sqlite_master WHERE type='index' AND tbl_name='$test'");
 
-        $out = array();
+        $out = [];
 
         while ($one = $this->fetch_assoc($res)) {
             if (preg_match('/\((.+?)\)/', $one['sql'], $match)) {
                 $col = explode(',', preg_replace('/["\s]/', '', $match[1]));
-                $out[$one['name']] = array(
-                'unique' => strpos($one['sql'], 'UNIQUE ') !== false,
-                'column' => $col,
-                );
+                $out[$one['name']] = [
+                    'unique' => strpos($one['sql'], 'UNIQUE ') !== false,
+                    'column' => $col,
+                ];
             }
         }
 

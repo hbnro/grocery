@@ -6,7 +6,7 @@ class Base extends \Grocery\Database\Forge
 {
 
     protected $conn = null;
-    protected $setup = array();
+    protected $setup = [];
 
     public function __construct($driver, $params)
     {
@@ -16,6 +16,6 @@ class Base extends \Grocery\Database\Forge
 
     public function __call($method, $arguments)
     {
-        return call_user_func_array(array($this->conn, $method), $arguments);
+        return call_user_func_array([$this->conn, $method], $arguments);
     }
 }

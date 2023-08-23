@@ -5,12 +5,12 @@ namespace Grocery;
 class Config
 {
 
-    private static $bag = array(
+    private static $bag = [
                     // debug
                     'logger' => '',
                     // scheme setup
                     'unserialize' => 'ignore',
-                  );
+                  ];
 
     public static function set($key, $value = null)
     {

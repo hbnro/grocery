@@ -7,10 +7,10 @@ class Debug
 
     private $logger = null;
 
-    private $queries = array(
-            'sql' => array(),
-            'ms' => array(),
-          );
+    private $queries = [
+            'sql' => [],
+            'ms' => [],
+          ];
 
     public function __construct($callback)
     {

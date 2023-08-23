@@ -5,7 +5,7 @@ namespace Grocery\Database\Schema;
 class MySQL extends \Grocery\Database\SQL\Schema
 {
 
-    public static $types = array(
+    public static $types = [
                   'VARCHAR' => 'string',
                   'LONGTEXT' => 'string',
                   'TINYTEXT' => 'string',
@@ -26,22 +26,22 @@ class MySQL extends \Grocery\Database\SQL\Schema
                   'TINYBLOB' => 'binary',
                   'BLOB' => 'binary',
                   'DATETIME' => 'timestamp',
-                );
+                ];
 
-    public static $raw = array(
+    public static $raw = [
                   'primary_key' => 'INT(11) auto_increment PRIMARY KEY',
-                  'string' => array('type' => 'VARCHAR', 'length' => 255),
-                  'integer' => array('type' => 'INT', 'length' => 11),
+                  'string' => ['type' => 'VARCHAR', 'length' => 255],
+                  'integer' => ['type' => 'INT', 'length' => 11],
                   'timestamp' => 'DATETIME',
-                  'numeric' => array('type' => 'VARCHAR', 'length' => 16),
-                  'boolean' => array('type' => 'TINYINT', 'length' => 1),
+                  'numeric' => ['type' => 'VARCHAR', 'length' => 16],
+                  'boolean' => ['type' => 'TINYINT', 'length' => 1],
                   'binary' => 'BLOB',
-                );
+                ];
 
-    private static $rename_col = array(
+    private static $rename_col = [
                     '/^VARCHAR$/' => 'VARCHAR(255)',
                     '/^INT(?:EGER)$/' => 'INT(11)',
-                  );
+                  ];
 
     public function rename($from, $to)
     {
@@ -109,7 +109,7 @@ class MySQL extends \Grocery\Database\SQL\Schema
 
     public function fetch_tables()
     {
-        $out = array();
+        $out = [];
         $old = $this->execute('SHOW TABLES');
 
         while ($row = $this->fetch_assoc($old)) {
@@ -121,18 +121,18 @@ class MySQL extends \Grocery\Database\SQL\Schema
 
     public function fetch_columns($test)
     {
-        $out = array();
+        $out = [];
         $old = $this->execute("DESCRIBE `$test`");
 
         while ($row = $this->fetch_assoc($old)) {
             preg_match('/^(\w+)(?:\((\d+)\))?.*?$/', strtoupper($row['Type']), $match);
 
-            $out[$row['Field']] = array(
-            'type' => $row['Extra'] == 'auto_increment' ? 'PRIMARY_KEY' : $match[1],
-            'length' => !empty($match[2]) ? (int) $match[2] : 0,
-            'default' => \Grocery\Base::plain($row['Default']),
-            'not_null' => $row['Null'] <> 'YES',
-            );
+            $out[$row['Field']] = [
+                'type' => $row['Extra'] == 'auto_increment' ? 'PRIMARY_KEY' : $match[1],
+                'length' => !empty($match[2]) ? (int) $match[2] : 0,
+                'default' => \Grocery\Base::plain($row['Default']),
+                'not_null' => $row['Null'] <> 'YES',
+            ];
         }
 
         return $out;
@@ -140,17 +140,17 @@ class MySQL extends \Grocery\Database\SQL\Schema
 
     public function fetch_indexes($test)
     {
-        $out = array();
+        $out = [];
 
         $res = $this->execute("SHOW INDEXES FROM `$test`");
 
         while ($one = $this->fetch_assoc($res)) {
             if ($one['Key_name'] <> 'PRIMARY') {
                 if (!isset($out[$one['Key_name']])) {
-                    $out[$one['Key_name']] = array(
-                    'unique' => !$one['Non_unique'],
-                    'column' => array(),
-                    );
+                    $out[$one['Key_name']] = [
+                        'unique' => !$one['Non_unique'],
+                        'column' => [],
+                    ];
                 }
 
                 $out[$one['Key_name']]['column'] []= $one['Column_name'];
