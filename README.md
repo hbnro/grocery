@@ -17,25 +17,30 @@ tables directly from the code and skip the CLI or GUI to achieve that.
 ```php
 <?php
 
-# configure the DSN
-$dsn = 'pgsql://postgres:test@localhost:5432/test#pdo';
+use Grocery\Base as DB;
 
-# create a connection
-$db = Grocery\Base::connect($dsn);
+# create a connection by DSN
+$db = DB::connect('pgsql://postgres:test@localhost:5432/test#pdo');
 
-# load existing table
+# load existing table by accesing an array member
 $foo = $db['my_table'];
 
-# pick one row randomly
-$bar = $foo->select('*', [/* where */], [
-  'order' => array('random'),
+# pick one row randomly!
+$bar = $foo->select('*', [
+  'field' => 'value',
+  'OR' => [
+    'foo' => null,
+    'foo >=' => gmdate('Y-m-d H:i:s'),
+  ], // WHERE "field" = 'value' AND ("foo" IS NULL OR "foo" >= '2023-08-22 23:45:12')
+], [
+  'order_by' => [$db->rand()], // ORDER BY RAND|RANDOM()
 ]);
 
 # create another table
 $db['other_table'] = [
-  'id' => 'primary_key',
-  'title' => 'string',
-  'published_at' => 'timestamp',
+  'id' => DB::pk(),
+  'title' => DB::str(['not_null' => true]),
+  'published_at' => DB::date(['default' => $db->now()]),
 ];
 
 # inserting a new row
