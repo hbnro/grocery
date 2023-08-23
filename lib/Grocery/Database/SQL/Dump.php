@@ -298,6 +298,13 @@ class Dump extends Base
                 }
 
                 if (is_array($val) && (sizeof($val) > 1)) {
+                    if (array_filter($val, 'is_array')) {
+                        $key = $match[1];
+                        $debug = json_encode($val);
+
+                        throw new \Exception("Invalid '{$key}' field, given '{$debug}'");
+                    }
+
                     $key  .= in_array($sub, ['!=', '<>']) ? ' NOT' : '';
                     $sql []= " $sub_prefix$key IN(" . join(', ', $val) . ")";
                 } else {

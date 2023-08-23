@@ -5,15 +5,14 @@ namespace Grocery\Database\SQL;
 class Raw
 {
     private $sql;
-    private $expr;
 
-    public function __construct($sql)
+    public function __construct($expr)
     {
-        $this->expr = $sql;
+        $this->sql = $expr;
     }
 
     public function __toString()
     {
-        return $this->expr;
+        return $this->sql;
     }
 }

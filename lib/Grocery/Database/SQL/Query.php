@@ -2,9 +2,9 @@
 
 namespace Grocery\Database\SQL;
 
-#[AllowDynamicProperties]
-class SafeException extends \Exception
+class SQLException extends \Exception
 {
+    public $query;
 }
 
 class Query extends Dump
@@ -54,7 +54,7 @@ class Query extends Dump
         $out = $this->execute($this->query_repare($sql));
 
         if ($message = $this->has_error()) {
-            $error = new SafeException("Database failure '$message'");
+            $error = new SQLException("Database failure '$message'");
             $error->query = $sql;
             throw $error;
         }

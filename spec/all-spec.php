@@ -12,6 +12,8 @@ describe('Grocery', function () {
     $datasources = array_filter([
         'sqlite::memory:',
         'sqlite::memory:#pdo',
+        getenv('MY_LOCAL') ? 'mysql://root@localhost:3306/test' : '',
+        getenv('MY_LOCAL') ? 'mysql://root@localhost:3306/test#pdo' : '',
         getenv('CI') ? 'mysql://mysql:mysql@localhost:33306/ci_db_test' : '',
         getenv('CI') ? 'mysql://mysql:mysql@localhost:33306/ci_db_test#pdo' : '',
         (getenv('CI') && !defined('HHVM_VERSION')) ? 'pgsql://postgres:postgres@localhost/ci_db_test' : '',
@@ -90,7 +92,7 @@ describe('Grocery', function () {
             describe('Helpers', function () {
                 describe('hydrate()', function () {
                     before(function ($db) {
-                        $db->reset()->create('a', ['id' => DB::pk(), 'x' => DB::int(['default' => $db->now()])]);
+                        $db->reset()->create('a', ['id' => DB::pk(), 'x' => DB::int(['default' => -1])]);
 
                         $db->a->insert(['x' => 123]);
                         $db->a->insert(['x' => 456]);

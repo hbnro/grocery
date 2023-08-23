@@ -35,6 +35,7 @@ class Base
                     'num' => 'numeric',
                     'bool' => 'boolean',
                     'blob' => 'binary',
+                    'text' => 'text',
                   ];
 
     public static function __callStatic($method, $arguments)
