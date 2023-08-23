@@ -1,3 +1,5 @@
 <?php
 
-interface JsonSerializable {}
+interface JsonSerializable
+{
+}

@@ -2,8 +2,10 @@
 
 namespace Grocery\Database\SQL;
 
-class Raw {
+class Raw
+{
     private $sql;
+    private $expr;
 
     public function __construct($sql)
     {
